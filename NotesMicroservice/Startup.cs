@@ -35,17 +35,16 @@ namespace NotesMicroservice
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             //Get Connection to database
-            services.AddDbContext<RepositoryManager.DBContext.AuthenticationContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("IdentityConnection")));
+            //   services.AddDbContext<AuthenticationContext>(options =>
+            //      options.UseSqlServer(this.Configuration.GetConnectionString("IdentityConnection")));
 
 
-            services.AddDefaultIdentity<NotesModel>()
-                .AddEntityFrameworkStores<AuthenticationContext>();
+            //services.AddDefaultIdentity<NotesModel>()
+            //    .AddEntityFrameworkStores<AuthenticationContext>();
 
             //Add transient
             services.AddTransient<IBusinessManager, BusinessManagerService>();
-            //services.AddTransient<INotesRepositoryManager, NotesRepositoryManager>();
-
+            services.AddTransient<INotesRepositoryManager, NotesRepositoryManager>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

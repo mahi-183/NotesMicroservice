@@ -17,13 +17,21 @@ namespace RepositoryManager.DBContext
     /// <summary>
     /// AuthenticationContext is for Authentication
     /// </summary>
-    public class AuthenticationContext : IdentityDbContext
+    public class AuthenticationContext : DbContext
     {
-        public AuthenticationContext(DbContextOptions options) : base(options)
+        public AuthenticationContext()
         {
 
         }
 
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=DESKTOP-KOH93I0;Database=NotesDB;Trusted_connection=True;MultipleActiveResultSets=True;");
+        }
+
+        //protected override void OnModelCreating(ModelBuilder modelBuilder)
+        //{
+        //}
         public DbSet<NotesModel> Notes { get; set; }
     }
 }

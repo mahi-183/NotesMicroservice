@@ -51,7 +51,7 @@ namespace CommanLayer.Model
         /// <value>
         /// The user identifier.
         /// </value>
-        
         public string Color { get; set; }
+        
    }
 }

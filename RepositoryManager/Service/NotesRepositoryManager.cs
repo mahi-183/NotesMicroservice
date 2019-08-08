@@ -15,14 +15,15 @@ namespace RepositoryManager.Service
     using System.Collections.Generic;
     using System.Text;
     using System.Threading.Tasks;
+   
 
     /// <summary>
     /// NotesRepositoryManager class implements the interface methods like AddNotes, DeleteNotes, UpdateNotes and GetNotes
     /// </summary>
     /// <seealso cref="INotesRepositoryManager" />
-    public class NotesRepositoryManager 
+    public class NotesRepositoryManager : INotesRepositoryManager
     {
-        private UserManager<NotesModel> userManager;
+      
         private readonly AuthenticationContext context;
 
         /// <summary>
@@ -30,33 +31,18 @@ namespace RepositoryManager.Service
         /// </summary>
         /// <param name="userManager">The user manager.</param>
         /// <param name="context">The context.</param>
-        public NotesRepositoryManager(UserManager<NotesModel> userManager, AuthenticationContext context)
+        public NotesRepositoryManager( AuthenticationContext context)
         {
-            this.userManager = userManager;
+          
             this.context = context;
         }
 
         /// <summary>
-        /// Gets the context.
+        /// AddNotes method is for adding the notes to the databaase
         /// </summary>
-        /// <value>
-        /// The context.
-        /// </value>
-        public AuthenticationContext Context { get; }
-
-        /// <summary>
-        /// Gets the notes.
-        /// </summary>
-        /// <param name="notesModel">The notes model.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="notesModel"></param>
         /// <returns></returns>
-        /// <exception cref="System.Exception"></exception>
-        //public IList<NotesModel> GetNotes(int id)
-        //{
-            
-        //}
-
-        public async Task<string> AddNotes(NotesModel notesModel, int id)
+        public int AddNotes( NotesModel notesModel)
         {
             try
             {
@@ -67,9 +53,9 @@ namespace RepositoryManager.Service
                     Description = notesModel.Description,
                     Color = notesModel.Color
                 };
-                this.Context.Notes.Add(note);
-                var result = Context.SaveChanges();
-                return result.ToString();
+                this.context.Notes.Add(note);
+                var result =  this.context.SaveChanges();
+                return result;
             }
             catch (Exception ex)
             {

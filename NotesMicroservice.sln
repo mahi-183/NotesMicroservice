@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.168
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NotesMicroservice", "NotesMicroservice\NotesMicroservice.csproj", "{98617DB1-5503-4601-8878-AB9600DB86AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "NotesMicroservice", "NotesMicroservice\NotesMicroservice.csproj", "{98617DB1-5503-4601-8878-AB9600DB86AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BusinessManager", "BusinessManager\BusinessManager.csproj", "{49D2462E-0FCD-4701-9BCA-5AA51416C5AC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessManager", "BusinessManager\BusinessManager.csproj", "{49D2462E-0FCD-4701-9BCA-5AA51416C5AC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RepositoryManager", "RepositoryManager\RepositoryManager.csproj", "{8A42FFED-A4B3-465C-BF5C-D7F93438512D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "RepositoryManager", "RepositoryManager\RepositoryManager.csproj", "{8A42FFED-A4B3-465C-BF5C-D7F93438512D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommanLayer", "CommanLayer\CommanLayer.csproj", "{921802F9-FEA5-4E09-BF29-3C71F065D402}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CommanLayer", "CommanLayer\CommanLayer.csproj", "{921802F9-FEA5-4E09-BF29-3C71F065D402}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
