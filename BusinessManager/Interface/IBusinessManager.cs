@@ -15,34 +15,41 @@ namespace BusinessManager.Interface
 
     public interface IBusinessManager
     {
-        ///// <summary>
-        ///// Gets or sets the get notes.
-        ///// </summary>
-        ///// <value>
-        ///// The get notes.
-        ///// </value>
-        //IList<NotesModel> GetNotes(int id);
-        
-        ///// <summary>
-        ///// Gets or sets the delete notes.
-        ///// </summary>
-        ///// <value>
-        ///// The delete notes.
-        ///// </value>
-        //Task<string> DeleteNotes(int id);
-
-        ///// <summary>
-        ///// Updates the notes.
-        ///// </summary>
-        ///// <param name="id">The identifier.</param>
-        ///// <returns></returns>
-        //Task<string> UpdateNotes(NotesModel notesModel, int id);
 
         /// <summary>
         /// Shows the notes.
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
         /// <returns></returns>
-        int AddNotes( NotesModel notesModel);
+        Task<int> AddNotes(NotesModel notesModel);
+
+        /// <summary>
+        /// Gets all notes.
+        /// </summary>
+        /// <returns></returns>
+        IList<NotesModel> GetAllNotes();
+
+        /// <summary>
+        /// Gets or sets the get notes.
+        /// </summary>
+        /// <value>
+        /// The get notes.
+        /// </value>
+        IList<NotesModel> GetNotesById(string id);
+
+        /// <summary>
+        /// Updates the notes.
+        /// </summary>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<int> UpdateNotes(NotesModel notesModel, string UserId);
+
+        /// <summary>
+        /// Gets or sets the delete notes.
+        /// </summary>
+        /// <value>
+        /// The delete notes.
+        /// </value>
+        Task<int> DeleteNotes(string UserId);
     }
 }

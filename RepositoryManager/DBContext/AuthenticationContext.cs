@@ -13,25 +13,26 @@ namespace RepositoryManager.DBContext
     using System;
     using System.Collections.Generic;
     using System.Text;
-    
+
     /// <summary>
-    /// AuthenticationContext is for Authentication
+    /// Authentication user class derived from DbContext class provided by microsoft entityFramework core
     /// </summary>
+    /// <seealso cref="Microsoft.EntityFrameworkCore.DbContext" />
     public class AuthenticationContext : DbContext
     {
-        public AuthenticationContext()
+        /// <summary>
+        /// pass the instance of the DbContextOptions class to the base DbContext class<see cref="AuthenticationContext"/> class.
+        /// </summary>
+        /// <param name="options">The options for this context.</param>
+        public AuthenticationContext(DbContextOptions options) : base(options) 
         {
 
         }
-
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            optionsBuilder.UseSqlServer(@"Server=DESKTOP-KOH93I0;Database=NotesDB;Trusted_connection=True;MultipleActiveResultSets=True;");
-        }
-
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //}
+        
+        //we will use this DbSet Notes to query and save the instances of the Notes model
         public DbSet<NotesModel> Notes { get; set; }
+
+        //we will use this DbSet Notes to query and save the instances of the Notes model
+        public DbSet<LabelModel> Label { get; set; }
     }
 }

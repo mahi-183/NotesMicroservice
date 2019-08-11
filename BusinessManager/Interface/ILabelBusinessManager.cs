@@ -1,11 +1,10 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="INotesRepositoryManager.cs" company="Bridgelabz">
+// <copyright file="ILabelBusinessManager.cs" company="Bridgelabz">
 //   Copyright © 2019 Company="BridgeLabz"
 // </copyright>
 // <creator name="Mahesh Aurad"/>
 // --------------------------------------------------------------------------------------------------------------------
-
-namespace RepositoryManager.Interface
+namespace BusinessManager.Interface
 {
     using CommanLayer.Model;
     using System;
@@ -13,41 +12,41 @@ namespace RepositoryManager.Interface
     using System.Text;
     using System.Threading.Tasks;
 
-    public interface INotesRepositoryManager
+    public interface ILabelBusinessManager
     {
         /// <summary>
-        /// Adds the notes.
+        /// Adds the label.
         /// </summary>
-        /// <param name="notesModel">The notes model.</param>
+        /// <param name="labelModel">The label model.</param>
         /// <returns></returns>
-        Task<int> AddNotes(NotesModel notesModel);
+        Task<int> AddLabel(LabelModel labelModel);
 
         /// <summary>
-        /// Gets all notes.
+        /// Gets all label.
         /// </summary>
         /// <returns></returns>
-        IList<NotesModel> GetAllNotes();
+        IList<LabelModel> GetAllLabel();
 
         /// <summary>
-        /// Gets the notes.
+        /// Gets the label by identifier.
         /// </summary>
-        /// <param name="notesModel">The notes model.</param>
+        /// <param name="LabelId">The label identifier.</param>
         /// <returns></returns>
-        IList<NotesModel> GetNotesById(string id);
+        IList<LabelModel> GetLabelById(int LabelId);
 
         /// <summary>
-        /// Updates the notes.
+        /// Updates the label.
         /// </summary>
-        /// <param name="notesModel">The notes model.</param>
-        /// <param name="id">The identifier.</param>
+        /// <param name="labelModel">The label model.</param>
+        /// <param name="UserId">The user identifier.</param>
         /// <returns></returns>
-        Task<int> UpdateNotes(NotesModel notesModel, string UserId);
+        Task<int> UpdateLabel(LabelModel labelModel, int LabelId);
 
         /// <summary>
-        /// Deletes the notes.
+        /// Deletes the label.
         /// </summary>
-        /// <param name="id">The identifier.</param>
+        /// <param name="LabelId">The label identifier.</param>
         /// <returns></returns>
-        Task<int> DeleteNotes(string id);
+        Task<int> DeleteLabel(int LabelId);
     }
 }

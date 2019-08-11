@@ -9,7 +9,7 @@ using RepositoryManager.DBContext;
 namespace RepositoryManager.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20190808105944_Notes")]
+    [Migration("20190810131640_Notes")]
     partial class Notes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -19,6 +19,23 @@ namespace RepositoryManager.Migrations
                 .HasAnnotation("ProductVersion", "2.2.4-servicing-10062")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+            modelBuilder.Entity("CommanLayer.Model.LabelModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("Lebel");
+
+                    b.Property<int>("NoteId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Label");
+                });
 
             modelBuilder.Entity("CommanLayer.Model.NotesModel", b =>
                 {
@@ -32,7 +49,7 @@ namespace RepositoryManager.Migrations
 
                     b.Property<string>("Title");
 
-                    b.Property<int>("UserId");
+                    b.Property<string>("UserId");
 
                     b.HasKey("Id");
 

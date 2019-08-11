@@ -10,7 +10,7 @@ namespace CommanLayer.Model
     using System.Collections.Generic;
     using System.Text;
 
-    public class NotesModel
+    public class LabelModel
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -19,6 +19,13 @@ namespace CommanLayer.Model
         /// The identifier.
         /// </value>
         public int Id { get; set; }
+        /// <summary>
+        /// Gets or sets the note identifier.
+        /// </summary>
+        /// <value>
+        /// The note identifier.
+        /// </value>
+        public int NoteId { get; set; }
 
         /// <summary>
         /// Gets or sets the user identifier.
@@ -29,27 +36,11 @@ namespace CommanLayer.Model
         public string UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the title.
+        /// Gets or sets the lebel.
         /// </summary>
         /// <value>
-        /// The title.
+        /// The lebel.
         /// </value>
-        public string Title { get; set; }
-
-        /// <summary>
-        /// Gets or sets the description.
-        /// </summary>
-        /// <value>
-        /// The description.
-        /// </value>
-        public string Description { get; set; }
-
-        /// <summary>
-        /// Gets or sets the user identifier.
-        /// </summary>
-        /// <value>
-        /// The user identifier.
-        /// </value>
-        public string Color { get; set; }
+        public string Lebel { get; set; }
     }
 }

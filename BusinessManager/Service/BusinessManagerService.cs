@@ -17,63 +17,102 @@ namespace BusinessManager.Service
 
     public class BusinessManagerService : IBusinessManager
     {
-        private INotesRepositoryManager repositoryManagaer;
+        //create reference of INotesRepository
+        private INotesRepositoryManager repositoryManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="BusinessManagerService"/> class.
+        /// </summary>
+        /// <param name="repositoryManager">The repository manager.</param>
         public BusinessManagerService(INotesRepositoryManager repositoryManager)
         {
-            this.repositoryManagaer = repositoryManager;
+            this.repositoryManager = repositoryManager;
         }
-        ///// <summary>
-        ///// Gets or sets the get notes.
-        ///// </summary>
-        ///// <param name="notesModel"></param>
-        ///// <returns></returns>
-        ///// <value>
-        ///// The get notes.
-        ///// </value>
-        //public IList<NotesModel> GetNotes(int id)
-        //{
-        //    var Resullt = this.repositoryManagaer.GetNotes(id);
-        //    return Resullt;
-        //}
-
-        ///// <summary>
-        ///// Delete the notes.
-        ///// </summary>
-        ///// <param name="id"></param>
-        ///// <returns></returns>
-        ///// <value>
-        ///// The delete notes.
-        ///// </value>
-        //public Task<string> DeleteNotes(int id)
-        //{
-        //    return this.repositoryManagaer.DeleteNotes(id);
-        //}
-
-        ///// <summary>
-        ///// Updates the notes.
-        ///// </summary>
-        ///// <param name="notesModel"></param>
-        ///// <param name="id">The identifier.</param>
-        ///// <returns></returns>
-        //public async Task<string> UpdateNotes(NotesModel notesModel, int id)
-        //{
-        //    var result = await this.repositoryManagaer.UpdateNotes(notesModel, id);
-        //    return result;
-        //}
 
         /// <summary>
         /// Add the notes.
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
         /// <returns></returns>
-        public int AddNotes(NotesModel notesModel)
+        public async Task<int> AddNotes(NotesModel notesModel)
         {
             //RepositoryManager layer method called
-            var result =   this.repositoryManagaer.AddNotes(notesModel);
-            
+            var result =await this.repositoryManager.AddNotes(notesModel);
+
             return result;
         }
 
+        /// <summary>
+        /// Display All notes 
+        /// </summary>
+        /// <returns></returns>
+        public IList<NotesModel> GetAllNotes()
+        {
+            try
+            {
+                var Result =this.repositoryManager.GetAllNotes();
+                if (Result != null)
+                {
+                    return Result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine(ex);
+                throw new Exception(ex.Message);
+            }
+        }
+        
+        /// <summary>
+        /// Gets or sets the get notes.
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <returns></returns>
+        /// <value>
+        /// The get notes.
+        /// </value>
+        public IList<NotesModel> GetNotesById(string id)
+        {
+            try
+            {
+                //repositoryManager layer method called
+                var Result =this.repositoryManager.GetNotesById(id);
+                return Result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Updates the notes.
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        public async Task<int> UpdateNotes(NotesModel notesModel, string UserId)
+        {
+            var result = await this.repositoryManager.UpdateNotes(notesModel, UserId);
+            return result;
+        }
+
+        /// <summary>
+        /// Delete the notes.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        /// <value>
+        /// The delete notes.
+        /// </value>
+        public async Task<int> DeleteNotes(string id)
+        {
+            var result = await this.repositoryManager.DeleteNotes(id);
+            return result;
+        }
     }
 }
