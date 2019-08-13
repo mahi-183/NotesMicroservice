@@ -32,7 +32,7 @@ namespace BusinessManager.Interface
         /// </summary>
         /// <param name="LabelId">The label identifier.</param>
         /// <returns></returns>
-        IList<LabelModel> GetLabelById(int LabelId);
+        IList<LabelModel> GetLabelById(string UserID);
 
         /// <summary>
         /// Updates the label.

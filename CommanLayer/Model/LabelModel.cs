@@ -19,6 +19,7 @@ namespace CommanLayer.Model
         /// The identifier.
         /// </value>
         public int Id { get; set; }
+
         /// <summary>
         /// Gets or sets the note identifier.
         /// </summary>

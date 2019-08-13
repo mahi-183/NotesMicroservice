@@ -10,9 +10,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace NotesMicroservice.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    //[Authorize]
     public class NotesController : ControllerBase
     {
         public IBusinessManager businessManager;
@@ -47,7 +47,7 @@ namespace NotesMicroservice.Controllers
         }
         
         [HttpGet]
-        [Route("GetAllNotes")]
+        [Route("notes")]
         public IList<NotesModel> GetAllNotes()
         {
             try

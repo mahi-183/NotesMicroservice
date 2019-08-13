@@ -3,12 +3,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using CommanLayer.Model;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RepositoryManager.Interface;
 
 namespace NotesMicroservice.Controllers
 {
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class LabelController : ControllerBase
@@ -58,12 +60,12 @@ namespace NotesMicroservice.Controllers
         }
 
         [HttpGet]
-        [Route("DisplayAll")]
-        public IActionResult GetLabelById(int LabelId)
+        [Route("DisplayById")]
+        public IActionResult GetLabelById(string UserId)
         {
             try
             {
-                IList<LabelModel> result = this.businessManager.GetLabelById(LabelId);
+                IList<LabelModel> result = this.businessManager.GetLabelById(UserId);
                 if (!result.Equals(null))
                 {
                     return this.Ok(new { result });

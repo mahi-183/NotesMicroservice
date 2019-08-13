@@ -53,7 +53,7 @@ namespace RepositoryManager.Service
                     Color = notesModel.Color
                 };
                 this.context.Notes.Add(note);
-                int result = this.context.SaveChanges();
+                int result =await this.context.SaveChangesAsync();
                 if(result >0)
                 {
                     return result;
@@ -105,15 +105,15 @@ namespace RepositoryManager.Service
         {
             try
             {
-                List<NotesModel> list = new List<NotesModel>();
+                IList<NotesModel> list = new List<NotesModel>();
 
-                var noteData =from note in this.context.Notes where note.UserId == UserId orderby note.Id descending select note;
+                var noteData =from note in this.context.Notes where note.UserId.Equals(UserId) orderby note.Id descending select note;
 
                 foreach (var data in noteData)
                 {
                     list.Add(data);
                 }
-                return list;
+                return list; 
             }
             catch (Exception ex)
             {

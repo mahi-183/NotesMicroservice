@@ -19,6 +19,7 @@ namespace BusinessManager.Service
     {
         //create reference of INotesRepository
         private INotesRepositoryManager repositoryManager;
+        private const string data = "data";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="BusinessManagerService"/> class.
@@ -38,7 +39,6 @@ namespace BusinessManager.Service
         {
             //RepositoryManager layer method called
             var result =await this.repositoryManager.AddNotes(notesModel);
-
             return result;
         }
 

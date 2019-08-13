@@ -84,13 +84,13 @@ namespace RepositoryManager.Service
         /// </summary>
         /// <param name="LabelId">The label identifier.</param>
         /// <returns></returns>
-        public IList<LabelModel> GetLabelById(int LabelId)
+        public IList<LabelModel> GetLabelById(string UserId)
         {
             try
             {
                 var list = new List<LabelModel>();
                 var GetData = from label in this.authenticationContext.Label
-                             where label.Id == LabelId
+                             where label.UserId.Equals(UserId)
                              select label;
                 foreach (var data in GetData)
                 {

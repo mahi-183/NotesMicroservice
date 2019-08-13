@@ -18,6 +18,7 @@ namespace BusinessManager.Service
     public class LabelBusinessService : ILabelBusinessManager
     {
         public ILabelRepositoryManager repositoryManager;
+        private const string data = "data";
 
         /// <summary>
         /// Initializes a new instance of the <see cref="LabelBusinessService"/> class.
@@ -95,13 +96,13 @@ namespace BusinessManager.Service
         /// </summary>
         /// <param name="LabelId">The label identifier.</param>
         /// <returns></returns>
-        public IList<LabelModel> GetLabelById(int LabelId)
+        public IList<LabelModel> GetLabelById(string UserId)
         {
-            if (LabelId.Equals(null))
+            if (UserId.Equals(null))
             {
                 try
                 {
-                    var result = this.repositoryManager.GetLabelById(LabelId);
+                    var result = this.repositoryManager.GetLabelById(UserId);
                     if (!result.Equals(null))
                     {
                         return result;
@@ -165,13 +166,20 @@ namespace BusinessManager.Service
         /// </exception>
         public async Task<int> DeleteLabel(int LabelId)
         {
-            if (!LabelId.Equals(null))
+            var cacheKey = data + LabelId;
+            try
             {
-                try
+                if (!LabelId.Equals(null))
                 {
+                    //using (var redis = new RedisClient())
+                    //{
+                    //    redis.Remove(cacheKey);
+                    //}
+                    //this.GetAllLabel();
+
                     var result = await this.repositoryManager.DeleteLabel(LabelId);
                     //return result;
-                    if(result > 0)
+                    if (result > 0)
                     {
                         return result;
                     }
@@ -180,15 +188,16 @@ namespace BusinessManager.Service
                         throw new Exception();
                     }
                 }
-                catch (Exception ex)
+                else
                 {
-                    throw new Exception(ex.Message);
+                    throw new Exception();
                 }
             }
-            else
+            catch (Exception ex)
             {
-                throw new Exception();
+                throw new Exception(ex.Message);
             }
+
         }
     }
 }
