@@ -14,6 +14,7 @@ namespace BusinessManager.Service
     using System.Text;
     using System.Threading.Tasks;
     using RepositoryManager.Interface;
+    using Microsoft.AspNetCore.Http;
 
     public class BusinessManagerService : IBusinessManager
     {
@@ -113,6 +114,33 @@ namespace BusinessManager.Service
         {
             var result = await this.repositoryManager.DeleteNotes(id);
             return result;
+        }
+
+        public async Task<string> ImageUpload(IFormFile formFile, int id)
+        {
+            try
+            {
+                if (!formFile.Equals(null))
+                {
+                    var result = await this.repositoryManager.ImageUpload(formFile, id);
+                    if (result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

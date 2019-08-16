@@ -27,6 +27,7 @@ using Swashbuckle.AspNetCore.Swagger;
 using Operation = Swashbuckle.AspNetCore.Swagger.Operation;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
+using NotesMicroservice.Controllers;
 
 namespace NotesMicroservice
 {
@@ -66,6 +67,7 @@ namespace NotesMicroservice
                 options.AddPolicy("User", policy =>
                     policy.RequireClaim("Id"));
             });
+
             //Jwt Authentication
             var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
             services.AddAuthentication(x =>
@@ -87,6 +89,7 @@ namespace NotesMicroservice
                     ClockSkew = TimeSpan.Zero
                 };
             });
+            
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
 
@@ -116,7 +119,7 @@ namespace NotesMicroservice
             app.UseMvc();
         }
     }
-    
+     
     public class FileUploadedOperation : IOperationFilter
     {
         /// <summary>

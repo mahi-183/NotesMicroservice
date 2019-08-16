@@ -8,6 +8,7 @@
 namespace RepositoryManager.Interface
 {
     using CommanLayer.Model;
+    using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -49,5 +50,13 @@ namespace RepositoryManager.Interface
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<int> DeleteNotes(string id);
+
+        /// <summary>
+        /// Images the upload.
+        /// </summary>
+        /// <param name="formFile">The form file.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<string> ImageUpload(IFormFile formFile, int id);
     }
 }

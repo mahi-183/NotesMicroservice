@@ -16,6 +16,8 @@ namespace RepositoryManager.Service
     using System.Text;
     using System.Threading.Tasks;
     using System.Linq;
+    using Microsoft.AspNetCore.Http;
+    using CommanLayer;
 
     /// <summary>
     /// NotesRepositoryManager class implements the interface methods like AddNotes, DeleteNotes, UpdateNotes and GetNotes
@@ -50,7 +52,11 @@ namespace RepositoryManager.Service
                     UserId = notesModel.UserId,
                     Title = notesModel.Title,
                     Description = notesModel.Description,
-                    Color = notesModel.Color
+                    Color = notesModel.Color,
+                    Image = notesModel.Image,
+                    Reminder = notesModel.Reminder,
+                    ModifiedDate = notesModel.CreatedDate,
+                    noteType = notesModel.noteType
                 };
                 this.context.Notes.Add(note);
                 int result =await this.context.SaveChangesAsync();
@@ -133,7 +139,7 @@ namespace RepositoryManager.Service
             try
             {
                 var updateData = from notes in this.context.Notes
-                                 where notes.UserId == UserId
+                                 where notes.UserId == UserId  
                                  select notes;
 
                 foreach (var update in updateData)
@@ -141,6 +147,10 @@ namespace RepositoryManager.Service
                     update.Title = notesModel.Title;
                     update.Description = notesModel.Description;
                     update.Color = notesModel.Color;
+                    update.Image = notesModel.Image;
+                    update.Reminder = notesModel.Reminder;
+                    update.ModifiedDate = notesModel.ModifiedDate;
+                    update.noteType = notesModel.noteType;
                 }
                 var Result =await this.SaveAll();
                 return Result;
@@ -178,6 +188,40 @@ namespace RepositoryManager.Service
                 this.context.Notes.Remove(removeData);
                 var Result = await this.SaveAll();
                 return Result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Images the specified file.
+        /// </summary>
+        /// <param name="file">The file.</param>
+        /// <param name="noteId">The note identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">
+        /// </exception>
+        public async Task<string> ImageUpload(IFormFile file, int noteId)
+        {
+            try
+            {
+                CloudinaryImage cloudinary = new CloudinaryImage();
+                var uploadUrl = cloudinary.UploadImageCloudinary(file, noteId);
+                var data = this.context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
+
+                data.Image = uploadUrl;
+
+                int result = await this.context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return data.Image;
+                }
+                else
+                {
+                    throw new Exception();
+                }
             }
             catch (Exception ex)
             {

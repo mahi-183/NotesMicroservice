@@ -105,5 +105,27 @@ namespace NotesMicroservice.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        [HttpPost]
+        [Route("UploadImage")]
+        public async Task<IActionResult> ImageUpload(IFormFile formFile, int id)
+        {
+            try
+            {
+                var ImageUrl = await this.businessManager.ImageUpload(formFile, id);
+                if (!ImageUrl.Equals(null))
+                {
+                    return this.Ok(new { ImageUrl });
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

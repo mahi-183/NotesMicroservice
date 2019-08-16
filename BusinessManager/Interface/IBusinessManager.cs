@@ -8,6 +8,7 @@
 namespace BusinessManager.Interface
 {
     using CommanLayer.Model;
+    using Microsoft.AspNetCore.Http;
     using System;
     using System.Collections.Generic;
     using System.Text;
@@ -51,5 +52,13 @@ namespace BusinessManager.Interface
         /// The delete notes.
         /// </value>
         Task<int> DeleteNotes(string UserId);
+
+        /// <summary>
+        /// Images the upload.
+        /// </summary>
+        /// <param name="formFile">The form file.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        Task<string> ImageUpload(IFormFile formFile, int id);
     }
 }
