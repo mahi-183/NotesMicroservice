@@ -15,7 +15,7 @@ namespace CommanLayer.Enumerable
         /// <summary>
         /// The is note
         /// </summary>
-        IsPin = 0,
+        IsNote = 0,
         
         /// <summary>
         /// The is trash

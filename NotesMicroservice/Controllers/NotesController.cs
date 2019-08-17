@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessManager.Interface;
+using CommanLayer.Enumerable;
 using CommanLayer.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -127,5 +128,72 @@ namespace NotesMicroservice.Controllers
                 throw new Exception(ex.Message);
             }
         }
+
+        [HttpGet]
+        [Route("Reminder")]
+        public IActionResult Reminder(int noteId)
+        {
+            try
+            {
+                var result = this.businessManager.Reminder(noteId);
+                if (!result.Equals(null))
+                {
+                    return this.Ok(new { result });
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("Pin")]
+        public IActionResult IsPin(int IsPin)
+        {
+            try
+            {
+                var result = this.businessManager.IsPin(IsPin);
+                if (!result.Equals(null))
+                {
+                    return this.Ok(new { result });
+                }
+                else
+                {
+                    return BadRequest(new { message = "Not pined" });
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        [Route("GetNoteType")]
+        public IActionResult GetNoteType(NoteTypeEnum NoteType)
+        {
+            try
+            {
+                var result = this.businessManager.GetNoteType(NoteType);
+                if (!result.Equals(null))
+                {
+                    return this.Ok(new { result });
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

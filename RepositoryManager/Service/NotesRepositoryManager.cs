@@ -18,6 +18,7 @@ namespace RepositoryManager.Service
     using System.Linq;
     using Microsoft.AspNetCore.Http;
     using CommanLayer;
+    using CommanLayer.Enumerable;
 
     /// <summary>
     /// NotesRepositoryManager class implements the interface methods like AddNotes, DeleteNotes, UpdateNotes and GetNotes
@@ -56,7 +57,8 @@ namespace RepositoryManager.Service
                     Image = notesModel.Image,
                     Reminder = notesModel.Reminder,
                     ModifiedDate = notesModel.CreatedDate,
-                    noteType = notesModel.noteType
+                    noteType = notesModel.noteType,
+                    IsPin = notesModel.IsPin
                 };
                 this.context.Notes.Add(note);
                 int result =await this.context.SaveChangesAsync();
@@ -151,6 +153,7 @@ namespace RepositoryManager.Service
                     update.Reminder = notesModel.Reminder;
                     update.ModifiedDate = notesModel.ModifiedDate;
                     update.noteType = notesModel.noteType;
+                    update.IsPin = notesModel.IsPin;
                 }
                 var Result =await this.SaveAll();
                 return Result;
@@ -208,14 +211,14 @@ namespace RepositoryManager.Service
             try
             {
                 CloudinaryImage cloudinary = new CloudinaryImage();
-                var uploadUrl = cloudinary.UploadImageCloudinary(file, noteId);
+                var uploadUrl = cloudinary.UploadImageCloudinary(file);
                 var data = this.context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
 
                 data.Image = uploadUrl;
 
                 int result = await this.context.SaveChangesAsync();
                 if (result > 0)
-                {
+                { 
                     return data.Image;
                 }
                 else
@@ -228,5 +231,109 @@ namespace RepositoryManager.Service
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Reminders the specified user identifier.
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        public IList<NotesModel> Reminder(int noteId)
+        {
+            try
+            {
+                IList<NotesModel> list = new List<NotesModel>();
+                var data = from notes in this.context.Notes
+                           where (notes.Id == noteId) && (notes.Reminder != null)
+                           select notes;
+
+                foreach (var reminderData in data)
+                {
+                    list.Add(reminderData);
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified user identifier is pin.
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        public IList<NotesModel> IsPin(int noteId)
+        {
+            try
+            {
+                IList<NotesModel> list = new List<NotesModel>();
+                var NoteData = from notes in this.context.Notes
+                               where (notes.Id == noteId) && (notes.IsPin == true)
+                               select notes;
+                foreach (var Data in NoteData)
+                {
+                    list.Add(Data);
+                }
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the note.
+        /// </summary>
+        /// <param name="notesModel">The notes model.</param>
+        /// <returns></returns>
+        public IList<NotesModel> GetNoteType(NoteTypeEnum noteType)
+        {
+            try
+            {
+                IList<NotesModel> list = new List<NotesModel>();
+                if (noteType == NoteTypeEnum.IsNote)
+                {
+                    var NoteData = from notes in this.context.Notes
+                                   where (notes.noteType == NoteTypeEnum.IsNote)
+                                   select notes;
+                    foreach (var data in NoteData)
+                    {
+                        list.Add(data);
+                    }
+                }
+                else if (noteType == NoteTypeEnum.IsArchive)
+                {
+                    var NoteData = from notes in this.context.Notes
+                                   where (notes.noteType == NoteTypeEnum.IsArchive)
+                                   select notes;
+                    foreach (var data in NoteData)
+                    {
+                        list.Add(data);
+                    }
+                }
+                else if (noteType == NoteTypeEnum.IsTrash)
+                {
+                    var NoteData = from notes in this.context.Notes
+                                   where (notes.noteType == NoteTypeEnum.IsTrash)
+                                   select notes;
+                    foreach (var data in NoteData)
+                    {
+                        list.Add(data);
+                    }
+                }
+                return list;
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
     }
 }

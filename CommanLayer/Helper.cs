@@ -15,7 +15,7 @@ namespace CommanLayer
 
     public class CloudinaryImage
     {
-        public string UploadImageCloudinary(IFormFile file, int id)
+        public string UploadImageCloudinary(IFormFile file)
         {
             try
             {

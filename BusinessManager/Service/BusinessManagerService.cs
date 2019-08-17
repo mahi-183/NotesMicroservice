@@ -15,6 +15,7 @@ namespace BusinessManager.Service
     using System.Threading.Tasks;
     using RepositoryManager.Interface;
     using Microsoft.AspNetCore.Http;
+    using CommanLayer.Enumerable;
 
     public class BusinessManagerService : IBusinessManager
     {
@@ -123,7 +124,7 @@ namespace BusinessManager.Service
                 if (!formFile.Equals(null))
                 {
                     var result = await this.repositoryManager.ImageUpload(formFile, id);
-                    if (result.Equals(null))
+                    if (!result.Equals(null))
                     {
                         return result;
                     }
@@ -138,6 +139,85 @@ namespace BusinessManager.Service
                 }
             }
             catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Reminders the specified user identifier.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">
+        /// </exception>
+        public IList<NotesModel> Reminder(int noteId)
+        {
+            try
+            {
+                if (!noteId.Equals(null))
+                {
+                    var Result = this.repositoryManager.Reminder(noteId);
+                    return Result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Determines whether the specified user identifier is pin.
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
+        /// <exception cref="Exception">
+        /// </exception>
+        public IList<NotesModel> IsPin(int IsPin)
+        {
+            try
+            {
+                if (!IsPin.Equals(null))
+                {
+                    var result = this.repositoryManager.IsPin(IsPin);
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the type of the notes.
+        /// </summary>
+        /// <param name="notesModel">The notes model.</param>
+        /// <returns></returns>
+        public IList<NotesModel> GetNoteType(NoteTypeEnum NoteType)
+        {
+            try
+            {
+                if (!NoteType.Equals(null))
+                {
+                    var result = this.repositoryManager.GetNoteType(NoteType);
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }

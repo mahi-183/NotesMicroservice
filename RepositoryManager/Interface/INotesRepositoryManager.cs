@@ -7,6 +7,7 @@
 
 namespace RepositoryManager.Interface
 {
+    using CommanLayer.Enumerable;
     using CommanLayer.Model;
     using Microsoft.AspNetCore.Http;
     using System;
@@ -58,5 +59,26 @@ namespace RepositoryManager.Interface
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
         Task<string> ImageUpload(IFormFile formFile, int id);
+
+        /// <summary>
+        /// Reminders the specified user identifier.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        IList<NotesModel> Reminder(int noteId);
+
+        /// <summary>
+        /// Determines whether the specified user identifier is pin.
+        /// </summary>
+        /// <param name="userId">The user identifier.</param>
+        /// <returns></returns>
+        IList<NotesModel> IsPin(int IsPin);
+
+        /// <summary>
+        /// Gets the type of the note.
+        /// </summary>
+        /// <param name="notesModel">The notes model.</param>
+        /// <returns></returns>
+        IList<NotesModel> GetNoteType(NoteTypeEnum NoteType);
     }
 }

@@ -87,6 +87,14 @@ namespace CommanLayer.Model
         public DateTime? ModifiedDate { get; set; }
 
         /// <summary>
+        /// Gets or sets a value indicating whether this instance is pin.
+        /// </summary>
+        /// <value>
+        ///   <c>true</c> if this instance is pin; otherwise, <c>false</c>.
+        /// </value>
+        public bool IsPin { get; set; }
+
+        /// <summary>
         /// Gets or sets the type of the note.
         /// </summary>
         /// <value>
