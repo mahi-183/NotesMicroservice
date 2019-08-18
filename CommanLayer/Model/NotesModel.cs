@@ -8,6 +8,7 @@ namespace CommanLayer.Model
 {
     using System;
     using System.Collections.Generic;
+    using System.ComponentModel.DataAnnotations;
     using System.Text;
     using CommanLayer.Enumerable;
 
@@ -53,13 +54,15 @@ namespace CommanLayer.Model
         /// </value>
 
         public string Color { get; set; }
-       
+
         /// <summary>
         /// Gets or sets the image.
         /// </summary>
         /// <value>
         /// The image.
         /// </value>
+        [Required(ErrorMessage = "Please select file.")]
+        [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$", ErrorMessage = "Only Image files allowed.")]
         public string Image { get; set; }
 
         /// <summary>

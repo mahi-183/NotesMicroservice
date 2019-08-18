@@ -151,13 +151,13 @@ namespace NotesMicroservice.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("Pin")]
-        public IActionResult IsPin(int IsPin)
+        public IActionResult IsPin(int noteId)
         {
             try
             {
-                var result = this.businessManager.IsPin(IsPin);
+                var result = this.businessManager.IsPin(noteId);
                 if (!result.Equals(null))
                 {
                     return this.Ok(new { result });
@@ -173,7 +173,7 @@ namespace NotesMicroservice.Controllers
             }
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetNoteType")]
         public IActionResult GetNoteType(NoteTypeEnum NoteType)
         {

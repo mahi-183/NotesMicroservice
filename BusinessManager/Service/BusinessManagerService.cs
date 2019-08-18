@@ -178,13 +178,13 @@ namespace BusinessManager.Service
         /// <returns></returns>
         /// <exception cref="Exception">
         /// </exception>
-        public IList<NotesModel> IsPin(int IsPin)
+        public IList<NotesModel> IsPin(int noteId)
         {
             try
             {
-                if (!IsPin.Equals(null))
+                if (!noteId.Equals(null))
                 {
-                    var result = this.repositoryManager.IsPin(IsPin);
+                    var result = this.repositoryManager.IsPin(noteId);
                     return result;
                 }
                 else

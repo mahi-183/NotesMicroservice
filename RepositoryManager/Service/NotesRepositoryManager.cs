@@ -210,7 +210,9 @@ namespace RepositoryManager.Service
         {
             try
             {
+                //create of the cloudinaryImage class
                 CloudinaryImage cloudinary = new CloudinaryImage();
+                //get Url of the cloudinary
                 var uploadUrl = cloudinary.UploadImageCloudinary(file);
                 var data = this.context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
 

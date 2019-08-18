@@ -72,7 +72,7 @@ namespace RepositoryManager.Interface
         /// </summary>
         /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
-        IList<NotesModel> IsPin(int IsPin);
+        IList<NotesModel> IsPin(int noteId);
 
         /// <summary>
         /// Gets the type of the note.
