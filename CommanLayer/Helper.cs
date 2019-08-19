@@ -30,11 +30,13 @@ namespace CommanLayer
             {
                 //Image file name
                 var name = file.FileName;
+                
                 //open the file and read in stream
                 var stream = file.OpenReadStream();
 
                 //Account details of cloudinary which cloudName, Api, secreteKey etc
                 CloudinaryDotNet.Account account = new CloudinaryDotNet.Account("bridgelabz-com", "921945993926817", "UcknrXKjOuFQAFZHwzoPxMFKELY");
+                
                 //Given all details to upload the image to cloud
                 CloudinaryDotNet.Cloudinary cloudinary = new CloudinaryDotNet.Cloudinary(account);
 
@@ -46,6 +48,7 @@ namespace CommanLayer
 
                 //uploaded the image to cloud with the stream and name of the image file
                 var uploadResult = cloudinary.Upload(uploadParams);
+                
                 //get url of uploded image on cloudinary 
                 var uploadUrl = uploadResult.Uri.ToString();
 

@@ -21,6 +21,8 @@ namespace BusinessManager.Service
     {
         //create reference of INotesRepository
         private INotesRepositoryManager repositoryManager;
+
+        //The data stored in redis cache is in form of key value pair or nosql format so here data is key
         private const string data = "data";
 
         /// <summary>
@@ -52,9 +54,13 @@ namespace BusinessManager.Service
         {
             try
             {
+                //RepositoryLayer method call
                 var Result =this.repositoryManager.GetAllNotes();
+
+                //if result contains null it throw the exeption 
                 if (Result != null)
                 {
+                    //return result
                     return Result;
                 }
                 else
@@ -77,7 +83,7 @@ namespace BusinessManager.Service
         /// <value>
         /// The get notes.
         /// </value>
-        public IList<NotesModel> GetNotesById(string id)
+        public IList<NotesModel> GetNotesById(int id)
         {
             try
             {
@@ -97,10 +103,17 @@ namespace BusinessManager.Service
         /// <param name="notesModel"></param>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        public async Task<int> UpdateNotes(NotesModel notesModel, string UserId)
+        public async Task<int> UpdateNotes(NotesModel notesModel, int id)
         {
-            var result = await this.repositoryManager.UpdateNotes(notesModel, UserId);
-            return result;
+            try
+            {
+                var result = await this.repositoryManager.UpdateNotes(notesModel, id);
+                return result;
+            }
+            catch(Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         /// <summary>
@@ -111,18 +124,44 @@ namespace BusinessManager.Service
         /// <value>
         /// The delete notes.
         /// </value>
-        public async Task<int> DeleteNotes(string id)
+        public async Task<int> DeleteNotes(int id)
         {
-            var result = await this.repositoryManager.DeleteNotes(id);
-            return result;
+            try
+            {
+                ////Append the id
+                ////var cachekey = data + id;
+
+                if (!id.Equals(null))
+                {
+                    var result = await this.repositoryManager.DeleteNotes(id);
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
+        /// <summary>
+        /// Images the upload.
+        /// </summary>
+        /// <param name="formFile">The form file.</param>
+        /// <param name="id">The identifier.</param>
+        /// <returns></returns>
+        /// <exception cref="Exception">
+        /// </exception>
         public async Task<string> ImageUpload(IFormFile formFile, int id)
         {
             try
             {
                 if (!formFile.Equals(null))
                 {
+                    ////RepositoryLayer method called
                     var result = await this.repositoryManager.ImageUpload(formFile, id);
                     if (!result.Equals(null))
                     {

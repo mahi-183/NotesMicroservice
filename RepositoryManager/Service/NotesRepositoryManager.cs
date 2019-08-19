@@ -109,13 +109,13 @@ namespace RepositoryManager.Service
         /// <param name="UserId">The user identifier.</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public IList<NotesModel> GetNotesById(string UserId)
+        public IList<NotesModel> GetNotesById(int id)
         {
             try
             {
                 IList<NotesModel> list = new List<NotesModel>();
 
-                var noteData =from note in this.context.Notes where note.UserId.Equals(UserId) orderby note.Id descending select note;
+                var noteData =from note in this.context.Notes where note.Id.Equals(id) orderby note.Id descending select note;
 
                 foreach (var data in noteData)
                 {
@@ -136,12 +136,12 @@ namespace RepositoryManager.Service
         /// <param name="UserId"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<int> UpdateNotes(NotesModel notesModel, string UserId)
+        public async Task<int> UpdateNotes(NotesModel notesModel, int id)
         {
             try
             {
                 var updateData = from notes in this.context.Notes
-                                 where notes.UserId == UserId  
+                                 where notes.Id == id  
                                  select notes;
 
                 foreach (var update in updateData)
@@ -179,12 +179,12 @@ namespace RepositoryManager.Service
         /// <param name="UserId">The user identifier.</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public async Task<int> DeleteNotes(string UserId)
+        public async Task<int> DeleteNotes(int id)
         {
             try
             {
                 var removeData = (from notes in this.context.Notes
-                                 where notes.UserId == UserId
+                                 where notes.Id == id
                                  select notes).FirstOrDefault();
                 //NotesModel removeDta = this.context.Notes.Where(note => note.UserId == UserId).FirstOrDefault();
 
@@ -210,15 +210,22 @@ namespace RepositoryManager.Service
         {
             try
             {
-                //create of the cloudinaryImage class
+                //create object of the cloudinaryImage class
                 CloudinaryImage cloudinary = new CloudinaryImage();
-                //get Url of the cloudinary
+                
+                //Cloudinary UploadImageCloudinary method call
                 var uploadUrl = cloudinary.UploadImageCloudinary(file);
+
+                //Query to get the note data from database 
                 var data = this.context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
 
+                //update the ImageUrl to database Notes table
                 data.Image = uploadUrl;
 
+                //Update save changes in dabase table
                 int result = await this.context.SaveChangesAsync();
+
+                //if result is grater than zero then return the update result 
                 if (result > 0)
                 { 
                     return data.Image;

@@ -16,8 +16,13 @@ namespace NotesMicroservice.Controllers
     [ApiController]
     public class NotesController : ControllerBase
     {
+        //create reference of businessLayer method
         public IBusinessManager businessManager;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="NotesController"/> class.
+        /// </summary>
+        /// <param name="businessManager">The business manager.</param>
         public NotesController(IBusinessManager businessManager)
         {
             this.businessManager = businessManager;
@@ -30,14 +35,17 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                //BusinessLayer method call
                 var result = this.businessManager.AddNotes(notesModel);
+                
+                //if result is null then it throw the error message 
                 if (!result.Equals(null))
                 {
                     return Ok(new { result });
                 }
                 else
                 {
-                    return BadRequest();
+                    return BadRequest(new { Message = "Notes not added"});
                 }
             }
             catch(Exception ex)
@@ -53,6 +61,7 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                //BusinessLayer method call
                 var result = this.businessManager.GetAllNotes();
                 return result;
             }
@@ -64,11 +73,12 @@ namespace NotesMicroservice.Controllers
 
         [HttpGet]
         [Route("GetNotes")]
-        public IList<NotesModel> GetNotesById(string UserId)
+        public IList<NotesModel> GetNotesById(int id)
         {
             try
             {
-                var result = this.businessManager.GetNotesById(UserId);
+                //BusinessLayer method call
+                var result = this.businessManager.GetNotesById(id);
                 return result;
             }
             catch (Exception ex)
@@ -79,11 +89,12 @@ namespace NotesMicroservice.Controllers
 
         [HttpPost]
         [Route("UpdateNotes")]
-        public async Task<int> UpdateNotes(NotesModel notesModel, string UserId)
+        public async Task<int> UpdateNotes(NotesModel notesModel, int id)
         {
             try
             {
-                var result =await this.businessManager.UpdateNotes(notesModel, UserId);
+                //BusinessLayer method call
+                var result =await this.businessManager.UpdateNotes(notesModel, id);
                 return result;
             }
             catch (Exception ex)
@@ -94,11 +105,12 @@ namespace NotesMicroservice.Controllers
         
         [HttpPost]
         [Route("DeleteNotes")]
-        public async Task<int> DeleteNotes(string UserId)
+        public async Task<int> DeleteNotes(int id)
         {
             try
             {
-                var result = await this.businessManager.DeleteNotes(UserId);
+                //BusinessLayer method call
+                var result = await this.businessManager.DeleteNotes(id);
                 return result;
             }
             catch (Exception ex)
@@ -113,7 +125,10 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                //BusinessLayer method call
                 var ImageUrl = await this.businessManager.ImageUpload(formFile, id);
+                
+                //if the imageurl is null then it 
                 if (!ImageUrl.Equals(null))
                 {
                     return this.Ok(new { ImageUrl });
@@ -135,7 +150,10 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                //BusinessLager method call
                 var result = this.businessManager.Reminder(noteId);
+                
+                //if result null then return result NotFount message
                 if (!result.Equals(null))
                 {
                     return this.Ok(new { result });
@@ -157,9 +175,11 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                //BusinessLayer method call
                 var result = this.businessManager.IsPin(noteId);
                 if (!result.Equals(null))
                 {
+                    //return result
                     return this.Ok(new { result });
                 }
                 else
@@ -179,6 +199,7 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                //BusinessLayer method call
                 var result = this.businessManager.GetNoteType(NoteType);
                 if (!result.Equals(null))
                 {

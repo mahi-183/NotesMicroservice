@@ -35,7 +35,7 @@ namespace RepositoryManager.Interface
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
         /// <returns></returns>
-        IList<NotesModel> GetNotesById(string id);
+        IList<NotesModel> GetNotesById(int id);
 
         /// <summary>
         /// Updates the notes.
@@ -43,14 +43,14 @@ namespace RepositoryManager.Interface
         /// <param name="notesModel">The notes model.</param>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<int> UpdateNotes(NotesModel notesModel, string UserId);
+        Task<int> UpdateNotes(NotesModel notesModel, int id);
 
         /// <summary>
         /// Deletes the notes.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<int> DeleteNotes(string id);
+        Task<int> DeleteNotes(int id);
 
         /// <summary>
         /// Images the upload.

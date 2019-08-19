@@ -52,7 +52,6 @@ namespace CommanLayer.Model
         /// <value>
         /// The user identifier.
         /// </value>
-
         public string Color { get; set; }
 
         /// <summary>
@@ -71,14 +70,16 @@ namespace CommanLayer.Model
         /// <value>
         ///   <c>true</c> if reminder; otherwise, <c>false</c>.
         /// </value>
-        public string Reminder { get; set; }
-        
+        public DateTime? Reminder { get; set; }
+
         /// <summary>
         /// Gets or sets the created date.
         /// </summary>
         /// <value>
         /// The created date.
         /// </value>
+        [Display(Name = "Create Date")]
+        [DataType(DataType.Date)]
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
@@ -87,6 +88,8 @@ namespace CommanLayer.Model
         /// <value>
         /// The modified date.
         /// </value>
+        [Display(Name = "Modified Date")]
+        [DataType(DataType.Date)]
         public DateTime? ModifiedDate { get; set; }
 
         /// <summary>

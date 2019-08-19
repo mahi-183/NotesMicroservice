@@ -15,16 +15,16 @@ namespace CommanLayer.Enumerable
         /// <summary>
         /// The is note
         /// </summary>
-        IsNote = 0,
+        IsNote,
         
         /// <summary>
         /// The is trash
         /// </summary>
-        IsTrash = 1,
+        IsTrash,
 
         /// <summary>
         /// The is archive
         /// </summary>
-        IsArchive = 2
+        IsArchive
     }
 }

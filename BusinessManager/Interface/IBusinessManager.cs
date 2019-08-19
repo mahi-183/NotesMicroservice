@@ -37,14 +37,14 @@ namespace BusinessManager.Interface
         /// <value>
         /// The get notes.
         /// </value>
-        IList<NotesModel> GetNotesById(string id);
+        IList<NotesModel> GetNotesById(int id);
 
         /// <summary>
         /// Updates the notes.
         /// </summary>
         /// <param name="id">The identifier.</param>
         /// <returns></returns>
-        Task<int> UpdateNotes(NotesModel notesModel, string UserId);
+        Task<int> UpdateNotes(NotesModel notesModel, int id);
 
         /// <summary>
         /// Gets or sets the delete notes.
@@ -52,7 +52,7 @@ namespace BusinessManager.Interface
         /// <value>
         /// The delete notes.
         /// </value>
-        Task<int> DeleteNotes(string UserId);
+        Task<int> DeleteNotes(int id);
 
         /// <summary>
         /// Images the upload.
