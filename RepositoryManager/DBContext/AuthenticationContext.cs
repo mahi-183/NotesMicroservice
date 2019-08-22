@@ -28,11 +28,20 @@ namespace RepositoryManager.DBContext
         {
 
         }
-        
-        //we will use this DbSet Notes to query and save the instances of the Notes model
+
+        /// <summary>
+        /// we will use this DbSet Notes to query and save the instances of the Notes model
+        /// </summary>
         public DbSet<NotesModel> Notes { get; set; }
 
-        //we will use this DbSet Notes to query and save the instances of the Notes model
+        /// <summary>
+        /// we will use this DbSet Notes to query and save the instances of the Notes model
+        /// </summary>
         public DbSet<LabelModel> Label { get; set; }
+
+        /// <summary>
+        /// we will use this DbSet Notes to query and save the instances of the Collaborator model 
+        /// </summary>
+        public DbSet<CollaboratorModel> Collaborator { get; set; }
     }
 }

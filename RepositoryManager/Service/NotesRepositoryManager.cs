@@ -46,22 +46,23 @@ namespace RepositoryManager.Service
         /// <returns></returns>
         public async Task<int> AddNotes( NotesModel notesModel)
         {
-            try
-            {
+            
                 NotesModel note = new NotesModel()
                 {
                     UserId = notesModel.UserId,
                     Title = notesModel.Title,
                     Description = notesModel.Description,
                     Color = notesModel.Color,
-                    Image = notesModel.Image,
                     Reminder = notesModel.Reminder,
-                    ModifiedDate = notesModel.CreatedDate,
+                    CreatedDate = notesModel.CreatedDate,
+                    ModifiedDate = notesModel.ModifiedDate,
                     noteType = notesModel.noteType,
                     IsPin = notesModel.IsPin
                 };
+            try
+            {
                 this.context.Notes.Add(note);
-                int result =await this.context.SaveChangesAsync();
+                int result = await this.context.SaveChangesAsync();
                 if(result >0)
                 {
                     return result;
@@ -109,19 +110,21 @@ namespace RepositoryManager.Service
         /// <param name="UserId">The user identifier.</param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public IList<NotesModel> GetNotesById(int id)
+        public IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType)
         {
             try
             {
-                IList<NotesModel> list = new List<NotesModel>();
-
-                var noteData =from note in this.context.Notes where note.Id.Equals(id) orderby note.Id descending select note;
-
-                foreach (var data in noteData)
+                var noteList = new List<NotesModel>();
+                
+                var note = (from notedata in context.Notes where notedata.UserId == userId select notedata);
+                foreach (var data in note)
                 {
-                    list.Add(data);
+                    if (data.noteType == noteType)
+                    {
+                        noteList.Add(data);
+                    }
                 }
-                return list; 
+                return noteList; 
             }
             catch (Exception ex)
             {
@@ -342,7 +345,72 @@ namespace RepositoryManager.Service
                 throw new Exception(ex.Message);
             }
         }
+        
+        /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns>return string result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
+        public async Task<int> AddCollaborator(CollaboratorModel collaboratorModel)
+        {
+            var collaborator = new CollaboratorModel()
+            {
+                UserId = collaboratorModel.UserId,
+                NoteId = collaboratorModel.NoteId,
+                CreatedBy = collaboratorModel.CreatedBy
+            };
 
+            try
+            {
+                this.context.Collaborator.Add(collaborator);
+                var result = await this.context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <returns>return the list of the collaborator.</returns>
+        public IList<CollaboratorModel> GetCollaborators(string email)
+        {
+            try
+            {
+                if (!email.Equals(null))
+                {
+                    IList<CollaboratorModel> collaborator = new List<CollaboratorModel>();
+                    var list = from coll in this.context.Collaborator
+                               where (coll.CreatedBy == email)
+                               select collaborator;
+                    foreach (var data in list)
+                    {
+                        collaborator.Add(data);
+                    }
+                    return collaborator;
+
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

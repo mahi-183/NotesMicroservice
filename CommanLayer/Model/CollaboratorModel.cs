@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotesModel.cs" company="Bridgelabz">
+// <copyright file="IBusinessManager.cs" company="Bridgelabz">
 //   Copyright © 2019 Company="BridgeLabz"
 // </copyright>
 // <creator name="Mahesh Aurad"/>
@@ -11,7 +11,7 @@ namespace CommanLayer.Model
     using System.ComponentModel.DataAnnotations;
     using System.Text;
 
-    public class LabelModel
+    public class CollaboratorModel
     {
         /// <summary>
         /// Gets or sets the identifier.
@@ -22,14 +22,6 @@ namespace CommanLayer.Model
         public int Id { get; set; }
 
         /// <summary>
-        /// Gets or sets the note identifier.
-        /// </summary>
-        /// <value>
-        /// The note identifier.
-        /// </value>
-        public int NoteId { get; set; }
-
-        /// <summary>
         /// Gets or sets the user identifier.
         /// </summary>
         /// <value>
@@ -38,29 +30,20 @@ namespace CommanLayer.Model
         public string UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the lebel.
+        /// Gets or sets the note identifier.
         /// </summary>
         /// <value>
-        /// The lebel.
+        /// The note identifier.
         /// </value>
-        public string Lebel { get; set; }
+        public int NoteId { get; set; }
 
         /// <summary>
-        /// Gets or sets the created date.
+        /// Gets or sets the created by.
         /// </summary>
         /// <value>
-        /// The created date.
+        /// The created by.
         /// </value>
-        //[Display(Name = "Modified Date")]
-        //[DataType(DataType.Date)]
-        public DateTime? CreatedDate { get; set; }
-
-        /// <summary>
-        /// Gets or sets the modified date.
-        /// </summary>
-        /// <value>
-        /// The modified date.
-        /// </value>
-        public DateTime? ModifiedDate { get; set; }
+        [EmailAddress]
+        public string CreatedBy { get; set; }
     }
 }

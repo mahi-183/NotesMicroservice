@@ -35,7 +35,7 @@ namespace RepositoryManager.Interface
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
         /// <returns></returns>
-        IList<NotesModel> GetNotesById(int id);
+        IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType);
 
         /// <summary>
         /// Updates the notes.
@@ -80,5 +80,20 @@ namespace RepositoryManager.Interface
         /// <param name="notesModel">The notes model.</param>
         /// <returns></returns>
         IList<NotesModel> GetNoteType(NoteTypeEnum NoteType);
+
+
+        /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns>retrun the int value.</returns>
+        Task<int> AddCollaborator(CollaboratorModel collaboratorModel);
+
+        /// <summary>
+        /// Get the collaborator.
+        /// </summary>
+        /// <param name="email">email.</param>
+        /// <returns>return the collaborator data.</returns>
+        IList<CollaboratorModel> GetCollborators(string email);
     }
 }

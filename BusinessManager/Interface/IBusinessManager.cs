@@ -4,7 +4,6 @@
 // </copyright>
 // <creator name="Mahesh Aurad"/>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace BusinessManager.Interface
 {
     using CommanLayer.Enumerable;
@@ -37,7 +36,7 @@ namespace BusinessManager.Interface
         /// <value>
         /// The get notes.
         /// </value>
-        IList<NotesModel> GetNotesById(int id);
+        IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType);
 
         /// <summary>
         /// Updates the notes.
@@ -81,6 +80,20 @@ namespace BusinessManager.Interface
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
         /// <returns></returns>
-        IList<NotesModel> GetNoteType(NoteTypeEnum NoteType); 
+        IList<NotesModel> GetNoteType(NoteTypeEnum NoteType);
+        
+        /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns></returns>
+        Task<int> AddCollaborator(CollaboratorModel collaboratorModel);
+
+        /// <summary>
+        /// Get The collaborator.
+        /// </summary>
+        /// <param name="email">Email address</param>
+        /// <returns>return the collaborator</returns>
+        Task<CollaboratorModel> GetCollborators(string email);
     }
 }

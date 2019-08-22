@@ -10,8 +10,8 @@ using RepositoryManager.DBContext;
 namespace RepositoryManager.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20190817124826_Notess")]
-    partial class Notess
+    [Migration("20190822111539_FandoosNotes")]
+    partial class FandoosNotes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -21,13 +21,34 @@ namespace RepositoryManager.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CommanLayer.Model.CollaboratorModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<int>("NoteId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Collaborator");
+                });
+
             modelBuilder.Entity("CommanLayer.Model.LabelModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("CreatedDate");
+
                     b.Property<string>("Lebel");
+
+                    b.Property<DateTime?>("ModifiedDate");
 
                     b.Property<int>("NoteId");
 
@@ -56,7 +77,7 @@ namespace RepositoryManager.Migrations
 
                     b.Property<DateTime?>("ModifiedDate");
 
-                    b.Property<string>("Reminder");
+                    b.Property<DateTime?>("Reminder");
 
                     b.Property<string>("Title");
 

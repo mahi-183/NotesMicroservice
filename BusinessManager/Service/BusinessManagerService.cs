@@ -16,6 +16,7 @@ namespace BusinessManager.Service
     using RepositoryManager.Interface;
     using Microsoft.AspNetCore.Http;
     using CommanLayer.Enumerable;
+    using ServiceStack.Redis;
 
     public class BusinessManagerService : IBusinessManager
     {
@@ -54,13 +55,13 @@ namespace BusinessManager.Service
         {
             try
             {
-                //RepositoryLayer method call
+                ////RepositoryLayer method call
                 var Result =this.repositoryManager.GetAllNotes();
 
-                //if result contains null it throw the exeption 
+                ////if result contains null it throw the exeption 
                 if (Result != null)
                 {
-                    //return result
+                    ////return result
                     return Result;
                 }
                 else
@@ -83,13 +84,35 @@ namespace BusinessManager.Service
         /// <value>
         /// The get notes.
         /// </value>
-        public IList<NotesModel> GetNotesById(int id)
+        public IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType)
         {
             try
             {
-                //repositoryManager layer method called
-                var Result =this.repositoryManager.GetNotesById(id);
-                return Result;
+                var cachekey = data + userId;
+                //// repositoryManager layer method called
+                // var Result =this.repositoryManager.GetNotesById(userId, noteType);
+
+                using (var redis = new RedisClient())
+                {
+                    redis.Remove(cachekey);
+
+                    if (redis.Get(cachekey) == null)
+                    {
+                        var noteData = this.repositoryManager.GetNotesById(userId, noteType);
+                        if (noteData != null)
+                        {
+                            redis.Set(cachekey, userId);
+                        }
+                        return noteData;
+                    }
+                    else
+                    {
+                        IList<NotesModel> list = new List<NotesModel>();
+                        var list1 = redis.Get(cachekey);
+                        //list.Add(list1);
+                        return list;
+                    }
+                }
             }
             catch (Exception ex)
             {
@@ -250,6 +273,75 @@ namespace BusinessManager.Service
                 {
                     var result = this.repositoryManager.GetNoteType(NoteType);
                     return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns>return the string result.</returns>
+        /// <exception cref="Exception">
+        /// throw exception.
+        /// </exception>
+        public async Task<int> AddCollaborator(CollaboratorModel collaboratorModel)
+        {
+            try
+            {
+                if (!collaboratorModel.Equals(null))
+                {
+                    ////repository service method called
+                    var result = await this.repositoryManager.AddCollaborator(collaboratorModel);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get the collaborator data.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public IList<CollaboratorModel> GetCollaborators(string email)
+        {
+            try
+            {
+                if (email.Equals(null))
+                {
+                    ////repositoryManager Layer call
+                    var result = this.repositoryManager.GetCollborators(email);
+                    if (result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
                 }
                 else
                 {

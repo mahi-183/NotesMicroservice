@@ -31,12 +31,12 @@ namespace NotesMicroservice.Controllers
         // POST: api/Notes
         [HttpPost]
         [Route("Add")]
-        public IActionResult AddNotes( NotesModel notesModel)
+        public async Task<IActionResult> AddNotes( NotesModel notesModel)
         {
             try
             {
                 //BusinessLayer method call
-                var result = this.businessManager.AddNotes(notesModel);
+                var result = await this.businessManager.AddNotes(notesModel);
                 
                 //if result is null then it throw the error message 
                 if (!result.Equals(null))
@@ -73,12 +73,12 @@ namespace NotesMicroservice.Controllers
 
         [HttpGet]
         [Route("GetNotes")]
-        public IList<NotesModel> GetNotesById(int id)
+        public IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType)
         {
             try
             {
                 //BusinessLayer method call
-                var result = this.businessManager.GetNotesById(id);
+                var result = this.businessManager.GetNotesById(userId, noteType);
                 return result;
             }
             catch (Exception ex)
@@ -125,6 +125,11 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                if (!ModelState.IsValid)
+                {
+                    return BadRequest(ModelState);   // This is the line that causes the intellisense error
+                }
+
                 //BusinessLayer method call
                 var ImageUrl = await this.businessManager.ImageUpload(formFile, id);
                 
@@ -215,6 +220,63 @@ namespace NotesMicroservice.Controllers
                 throw new Exception(ex.Message);
             }
         }
+        
+        [HttpPost]
+        [Route("AddCollaborator")]
+        public async Task<IActionResult> AddCollabarator(CollaboratorModel collaboratorModel)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ////BusinessManager Layer method call
+                    var result = await this.businessManager.AddCollaborator(collaboratorModel);
 
+                    ///return the success result
+                    return this.Ok(new { result });
+                }
+                else
+                {
+                    ////return the failer result
+                    return BadRequest(new { message = "data is not valid" });
+                }
+            }
+            catch (Exception ex)
+            {
+                ////if exception occure then throw exceptions
+                throw new Exception(ex.Message);
+            }
+        }
+
+        [HttpGet]
+        [Route("GetCollaborator")]
+        public async Task<IActionResult> GetCollaborator(string email)
+        {
+            try
+            {
+                if (!email.Equals(null))
+                {
+                    ////BusinessManager layer method call
+                    var result = await this.businessManager.GetCollborators(email);
+                    if (!result.Equals(null))
+                    {
+                        ////return the result.
+                        return this.Ok(new { result });
+                    }
+                    else
+                    {
+                        return BadRequest(new { message = "The collaborator not get" });
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

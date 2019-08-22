@@ -19,13 +19,34 @@ namespace RepositoryManager.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128)
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+            modelBuilder.Entity("CommanLayer.Model.CollaboratorModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<string>("CreatedBy");
+
+                    b.Property<int>("NoteId");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Collaborator");
+                });
+
             modelBuilder.Entity("CommanLayer.Model.LabelModel", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
+                    b.Property<DateTime?>("CreatedDate");
+
                     b.Property<string>("Lebel");
+
+                    b.Property<DateTime?>("ModifiedDate");
 
                     b.Property<int>("NoteId");
 
@@ -54,7 +75,7 @@ namespace RepositoryManager.Migrations
 
                     b.Property<DateTime?>("ModifiedDate");
 
-                    b.Property<string>("Reminder");
+                    b.Property<DateTime?>("Reminder");
 
                     b.Property<string>("Title");
 
