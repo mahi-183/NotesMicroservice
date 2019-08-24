@@ -60,6 +60,42 @@ namespace RepositoryManager.Interface
         /// <returns></returns>
         Task<string> ImageUpload(IFormFile formFile, int id);
 
+
+        /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns>retrun the int value.</returns>
+        Task<int> AddCollaborator(CollaboratorModel collaboratorModel);
+
+        /// <summary>
+        /// Get the collaborator.
+        /// </summary>
+        /// <param name="email">email.</param>
+        /// <returns>return the collaborator data.</returns>
+        IList<CollaboratorModel> GetCollborators(int id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<int> RemoveCollaboratorToNote(int id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<int> BulkDelete(IList<int> id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
+        IList<NotesModel> Search(string searchString);
+        
         /// <summary>
         /// Reminders the specified user identifier.
         /// </summary>
@@ -82,18 +118,5 @@ namespace RepositoryManager.Interface
         IList<NotesModel> GetNoteType(NoteTypeEnum NoteType);
 
 
-        /// <summary>
-        /// Adds the collaborator.
-        /// </summary>
-        /// <param name="collaboratorModel">The collaborator model.</param>
-        /// <returns>retrun the int value.</returns>
-        Task<int> AddCollaborator(CollaboratorModel collaboratorModel);
-
-        /// <summary>
-        /// Get the collaborator.
-        /// </summary>
-        /// <param name="email">email.</param>
-        /// <returns>return the collaborator data.</returns>
-        IList<CollaboratorModel> GetCollborators(string email);
     }
 }

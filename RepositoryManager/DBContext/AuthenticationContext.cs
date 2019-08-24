@@ -4,7 +4,6 @@
 // </copyright>
 // <creator name="Mahesh Aurad"/>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace RepositoryManager.DBContext
 {
     using CommanLayer.Model;

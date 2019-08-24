@@ -62,6 +62,41 @@ namespace BusinessManager.Interface
         Task<string> ImageUpload(IFormFile formFile, int id);
 
         /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns></returns>
+        Task<int> AddCollaborator(CollaboratorModel collaboratorModel);
+
+        /// <summary>
+        /// Get The collaborator.
+        /// </summary>
+        /// <param name="email">Email address</param>
+        /// <returns>return the collaborator</returns>
+        IList<CollaboratorModel> GetCollborators(int id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<int> RemoveCollaboratorToNote(int id);
+        
+        /// <summary>
+        /// Delete the Multiple Notes.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        Task<int> BulkDelete(IList<int> id);
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchstring"></param>
+        /// <returns></returns>
+        IList<NotesModel> Search(string searchstring);
+        
+        /// <summary>
         /// Reminders the specified user identifier.
         /// </summary>
         /// <param name="userId">The user identifier.</param>
@@ -82,18 +117,7 @@ namespace BusinessManager.Interface
         /// <returns></returns>
         IList<NotesModel> GetNoteType(NoteTypeEnum NoteType);
         
-        /// <summary>
-        /// Adds the collaborator.
-        /// </summary>
-        /// <param name="collaboratorModel">The collaborator model.</param>
-        /// <returns></returns>
-        Task<int> AddCollaborator(CollaboratorModel collaboratorModel);
 
-        /// <summary>
-        /// Get The collaborator.
-        /// </summary>
-        /// <param name="email">Email address</param>
-        /// <returns>return the collaborator</returns>
-        Task<CollaboratorModel> GetCollborators(string email);
+
     }
 }

@@ -206,6 +206,170 @@ namespace BusinessManager.Service
             }
         }
 
+
+        /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns>return the string result.</returns>
+        /// <exception cref="Exception">
+        /// throw exception.
+        /// </exception>
+        public async Task<int> AddCollaborator(CollaboratorModel collaboratorModel)
+        {
+            try
+            {
+                if (!collaboratorModel.Equals(null))
+                {
+                    ////repository service method called
+                    var result = await this.repositoryManager.AddCollaborator(collaboratorModel);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Get the collaborator data.
+        /// </summary>
+        /// <param name="email"></param>
+        /// <returns></returns>
+        public IList<CollaboratorModel> GetCollborators(int id)
+        {
+            try
+            {
+                if (!id.Equals(null))
+                {
+                    ////repositoryManager Layer call
+                    var result = this.repositoryManager.GetCollborators(id);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<int> RemoveCollaboratorToNote(int id)
+        {
+            try
+            {
+                if (!id.Equals(null))
+                {
+                    var result = await this.repositoryManager.RemoveCollaboratorToNote(id);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<int> BulkDelete(IList<int> id)
+        {
+            try
+            {
+
+                if (!id.Equals(null))
+                {
+                    ////NotesRepository Layer method called.
+                    var result = await this.repositoryManager.BulkDelete(id);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public IList<NotesModel> Search(string searchString)
+        {
+            try
+            {
+                if (!searchString.Equals(null))
+                {
+                    IList<NotesModel> result = new List<NotesModel>();
+                    result = this.repositoryManager.Search(searchString);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
         /// <summary>
         /// Reminders the specified user identifier.
         /// </summary>
@@ -285,73 +449,5 @@ namespace BusinessManager.Service
             }
         }
 
-        /// <summary>
-        /// Adds the collaborator.
-        /// </summary>
-        /// <param name="collaboratorModel">The collaborator model.</param>
-        /// <returns>return the string result.</returns>
-        /// <exception cref="Exception">
-        /// throw exception.
-        /// </exception>
-        public async Task<int> AddCollaborator(CollaboratorModel collaboratorModel)
-        {
-            try
-            {
-                if (!collaboratorModel.Equals(null))
-                {
-                    ////repository service method called
-                    var result = await this.repositoryManager.AddCollaborator(collaboratorModel);
-                    if (!result.Equals(null))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// Get the collaborator data.
-        /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public IList<CollaboratorModel> GetCollaborators(string email)
-        {
-            try
-            {
-                if (email.Equals(null))
-                {
-                    ////repositoryManager Layer call
-                    var result = this.repositoryManager.GetCollborators(email);
-                    if (result.Equals(null))
-                    {
-                        return result;
-                    }
-                    else
-                    {
-                        throw new Exception();
-                    }
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
     }
 }

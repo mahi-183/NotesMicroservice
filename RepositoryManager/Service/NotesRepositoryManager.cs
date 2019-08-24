@@ -245,6 +245,197 @@ namespace RepositoryManager.Service
         }
 
         /// <summary>
+        /// Adds the collaborator.
+        /// </summary>
+        /// <param name="collaboratorModel">The collaborator model.</param>
+        /// <returns>return string result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
+        public async Task<int> AddCollaborator(CollaboratorModel collaboratorModel)
+        {
+            try
+            {
+                var data = from t in this.context.Collaborator where t.UserId == collaboratorModel.UserId select t;
+                foreach (var item in data.ToList())
+                {
+                    if (item.NoteId.Equals(collaboratorModel.NoteId) && item.CreatedBy.Equals(collaboratorModel.CreatedBy))
+                    {
+                        return 0;
+                    }
+                }
+
+                var collaborator = new CollaboratorModel()
+                {
+                    UserId = collaboratorModel.UserId,
+                    NoteId = collaboratorModel.NoteId,
+                    CreatedBy = collaboratorModel.CreatedBy
+                };
+
+                this.context.Collaborator.Add(collaborator);
+                var result = await this.context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="email">email</param>
+        /// <returns>return the list of the collaborator.</returns>
+        public IList<CollaboratorModel> GetCollborators(int noteId)
+        {
+            try
+            {
+                if (!noteId.Equals(null))
+                {
+                    IList<CollaboratorModel> collaborator = new List<CollaboratorModel>();
+                    IList<NotesModel> notes = new List<NotesModel>();
+
+                    var result = from e in this.context.Notes
+                                 join d in this.context.Collaborator
+                                 on e.Id equals d.NoteId
+                                 select e ;
+
+                    foreach (var data in result)
+                    {
+                        var list = from note in this.context.Notes
+                                   where (data.Id == noteId)
+                                   select note;
+
+                        foreach (var datas in list)
+                        {
+                            notes.Add(datas);
+                        }
+                    }
+                    return collaborator;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// remove the collaborator.
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<int> RemoveCollaboratorToNote(int id)
+        {
+            try
+            {
+                //// get the collaborator data 
+                var data = this.context.Collaborator.Where<CollaboratorModel>(t => t.Id == id).FirstOrDefault();
+                ////remove the collaborator
+                this.context.Collaborator.Remove(data);
+                ////return the result after update the database
+                var result = await this.context.SaveChangesAsync();
+                if (result.Equals(null))
+                {
+                    return result;
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception exception)
+            {
+                throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        public async Task<int> BulkDelete(IList<int> id)
+        {
+            try
+            {
+                if (!id.Equals(null))
+                {
+                    foreach (var noteId in id)
+                    {
+                        var notes = (from note in this.context.Notes
+                                    where note.Id == noteId
+                                    select note).FirstOrDefault();
+
+                        this.context.Notes.Remove(notes);
+                    }
+                    var result = await this.context.SaveChangesAsync();
+                    if (result > 0)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
+        public IList<NotesModel> Search(string searchString)
+        {
+            try
+            {
+                if (!String.IsNullOrEmpty(searchString))
+                {
+                    var list = new List<NotesModel>();
+                    var query = this.context.Notes.Where(s => s.Title.Contains(searchString)
+                                                            || s.Description.Contains(searchString));
+                    list = query.ToList();
+                    if (!list.Equals(null))
+                    {
+                        return list;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Reminders the specified user identifier.
         /// </summary>
         /// <param name="noteId"></param>
@@ -339,73 +530,6 @@ namespace RepositoryManager.Service
                 }
                 return list;
 
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-        
-        /// <summary>
-        /// Adds the collaborator.
-        /// </summary>
-        /// <param name="collaboratorModel">The collaborator model.</param>
-        /// <returns>return string result.</returns>
-        /// <exception cref="Exception">throw exception.</exception>
-        public async Task<int> AddCollaborator(CollaboratorModel collaboratorModel)
-        {
-            var collaborator = new CollaboratorModel()
-            {
-                UserId = collaboratorModel.UserId,
-                NoteId = collaboratorModel.NoteId,
-                CreatedBy = collaboratorModel.CreatedBy
-            };
-
-            try
-            {
-                this.context.Collaborator.Add(collaborator);
-                var result = await this.context.SaveChangesAsync();
-                if (result > 0)
-                {
-                    return result;
-                }
-                else
-                {
-                    throw new Exception();
-                }
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="email">email</param>
-        /// <returns>return the list of the collaborator.</returns>
-        public IList<CollaboratorModel> GetCollaborators(string email)
-        {
-            try
-            {
-                if (!email.Equals(null))
-                {
-                    IList<CollaboratorModel> collaborator = new List<CollaboratorModel>();
-                    var list = from coll in this.context.Collaborator
-                               where (coll.CreatedBy == email)
-                               select collaborator;
-                    foreach (var data in list)
-                    {
-                        collaborator.Add(data);
-                    }
-                    return collaborator;
-
-                }
-                else
-                {
-                    throw new Exception();
-                }
             }
             catch (Exception ex)
             {

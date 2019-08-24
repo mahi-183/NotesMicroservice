@@ -1,16 +1,23 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessManager.Interface;
-using CommanLayer.Enumerable;
-using CommanLayer.Model;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="NotesController.cs" company="Bridgelabz">
+//   Copyright © 2019 Company="BridgeLabz"
+// </copyright>
+// <creator name="Mahesh Aurad"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace NotesMicroservice.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
+    using BusinessManager.Interface;
+    using CommanLayer.Enumerable;
+    using CommanLayer.Model;
+    using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Mvc;
+
+
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -28,7 +35,11 @@ namespace NotesMicroservice.Controllers
             this.businessManager = businessManager;
         }     
         
-        // POST: api/Notes
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("Add")]
         public async Task<IActionResult> AddNotes( NotesModel notesModel)
@@ -55,6 +66,10 @@ namespace NotesMicroservice.Controllers
             }
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         [Route("notes")]
         public IList<NotesModel> GetAllNotes()
@@ -71,6 +86,12 @@ namespace NotesMicroservice.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="noteType"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetNotes")]
         public IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType)
@@ -87,6 +108,12 @@ namespace NotesMicroservice.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="notesModel"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("UpdateNotes")]
         public async Task<int> UpdateNotes(NotesModel notesModel, int id)
@@ -103,6 +130,11 @@ namespace NotesMicroservice.Controllers
             }
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("DeleteNotes")]
         public async Task<int> DeleteNotes(int id)
@@ -119,6 +151,12 @@ namespace NotesMicroservice.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="formFile"></param>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("UploadImage")]
         public async Task<IActionResult> ImageUpload(IFormFile formFile, int id)
@@ -149,6 +187,11 @@ namespace NotesMicroservice.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("Reminder")]
         public IActionResult Reminder(int noteId)
@@ -174,6 +217,11 @@ namespace NotesMicroservice.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="noteId"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("Pin")]
         public IActionResult IsPin(int noteId)
@@ -198,6 +246,11 @@ namespace NotesMicroservice.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="NoteType"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetNoteType")]
         public IActionResult GetNoteType(NoteTypeEnum NoteType)
@@ -221,6 +274,11 @@ namespace NotesMicroservice.Controllers
             }
         }
         
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="collaboratorModel"></param>
+        /// <returns></returns>
         [HttpPost]
         [Route("AddCollaborator")]
         public async Task<IActionResult> AddCollabarator(CollaboratorModel collaboratorModel)
@@ -248,16 +306,21 @@ namespace NotesMicroservice.Controllers
             }
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpGet]
         [Route("GetCollaborator")]
-        public async Task<IActionResult> GetCollaborator(string email)
+        public IActionResult GetCollaborator(int id)
         {
             try
             {
-                if (!email.Equals(null))
+                if (!id.Equals(null))
                 {
                     ////BusinessManager layer method call
-                    var result = await this.businessManager.GetCollborators(email);
+                    var result = this.businessManager.GetCollborators(id);
                     if (!result.Equals(null))
                     {
                         ////return the result.
@@ -271,6 +334,110 @@ namespace NotesMicroservice.Controllers
                 else
                 {
                     throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("RemoveCollaborator")]
+        public async Task<IActionResult> RemoveCollaboratorToNote(int id)
+        {
+            try
+            {
+                if (!id.Equals(null))
+                {
+                    ////businessManager Layer method Called
+                    var result = await this.businessManager.RemoveCollaboratorToNote(id);
+                    if (!result.Equals(null))
+                    {
+                        return this.Ok(new { result });
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("BulkDelete")]
+        public async Task<IActionResult> BulkDelete(IList<int> id)
+        {
+            try
+            {
+                if (!id.Equals(null))
+                {
+                    ////businessManager Layer method called
+                    var result = await this.businessManager.BulkDelete(id);
+                    if (!result.Equals(null))
+                    {
+                        return this.Ok(new { result });
+                    }
+                    else
+                    {
+                        return this.BadRequest();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="searchString"></param>
+        /// <returns></returns>
+        [HttpPost]
+        [Route("Search")]
+        public IActionResult Search(string searchString)
+        {
+            try
+            {
+                if (!searchString.Equals(null))
+                {
+                    var result = this.businessManager.Search(searchString);
+                    if (!result.Equals(null))
+                    {
+                        return this.Ok(new { result });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { Message = "Entered search string is emplty" });
+                    }
+                }
+                else
+                {
+                    return this.BadRequest(new { Message = "Entered search string is empty" });
                 }
             }
             catch (Exception ex)
