@@ -1,16 +1,16 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="IBusinessManager.cs" company="Bridgelabz">
+// <copyright file="CollaboratorModel.cs" company="Bridgelabz">
 //   Copyright © 2019 Company="BridgeLabz"
 // </copyright>
 // <creator name="Mahesh Aurad"/>
 // --------------------------------------------------------------------------------------------------------------------
 namespace CommanLayer.Model
 {
-    using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
-    using System.Text;
 
+    /// <summary>
+    /// collaborator model class.
+    /// </summary>
     public class CollaboratorModel
     {
         /// <summary>

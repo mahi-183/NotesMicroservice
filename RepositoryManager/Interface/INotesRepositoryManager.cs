@@ -73,7 +73,7 @@ namespace RepositoryManager.Interface
         /// </summary>
         /// <param name="email">email.</param>
         /// <returns>return the collaborator data.</returns>
-        IList<CollaboratorModel> GetCollborators(int id);
+        IList<string> GetCollborators(int id);
 
         /// <summary>
         /// 

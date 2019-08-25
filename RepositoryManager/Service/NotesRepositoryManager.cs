@@ -254,14 +254,14 @@ namespace RepositoryManager.Service
         {
             try
             {
-                var data = from t in this.context.Collaborator where t.UserId == collaboratorModel.UserId select t;
-                foreach (var item in data.ToList())
-                {
-                    if (item.NoteId.Equals(collaboratorModel.NoteId) && item.CreatedBy.Equals(collaboratorModel.CreatedBy))
-                    {
-                        return 0;
-                    }
-                }
+                //var data = from t in this.context.Collaborator where t.UserId == collaboratorModel.UserId select t;
+                //foreach (var item in data.ToList())
+                //{
+                //    if (item.NoteId.Equals(collaboratorModel.NoteId) && item.CreatedBy.Equals(collaboratorModel.CreatedBy))
+                //    {
+                //        return 0;
+                //    }
+                //}
 
                 var collaborator = new CollaboratorModel()
                 {
@@ -292,7 +292,7 @@ namespace RepositoryManager.Service
         /// </summary>
         /// <param name="email">email</param>
         /// <returns>return the list of the collaborator.</returns>
-        public IList<CollaboratorModel> GetCollborators(int noteId)
+        public IList<string> GetCollborators(int noteId)
         {
             try
             {
@@ -301,23 +301,28 @@ namespace RepositoryManager.Service
                     IList<CollaboratorModel> collaborator = new List<CollaboratorModel>();
                     IList<NotesModel> notes = new List<NotesModel>();
 
-                    var result = from e in this.context.Notes
-                                 join d in this.context.Collaborator
-                                 on e.Id equals d.NoteId
-                                 select e ;
+                    //var dbQuery = from note in this.context.Notes
+                    //             join collaborators in this.context.Collaborator
+                    //             on note.Id equals collaborators.NoteId
+                    //             join user in this.context.ApplicationUser on collaborators.UserId equals user.Id
+                    //             select new {user.Email, collaborators.NoteId} ;
 
-                    foreach (var data in result)
+
+                    var dbQuery = from note in this.context.Notes
+                                  join collaborators in this.context.Collaborator
+                                  on note.Id equals collaborators.NoteId
+                                  select new { note.Id, collaborators.CreatedBy };
+
+                    var finalQuery = dbQuery.AsEnumerable().Select(x => string.Format("Email:{0}; NoteId:{1}", x.CreatedBy, x.Id));
+                    string[] result = finalQuery.ToArray();
+                    if (!finalQuery.Equals(null))
                     {
-                        var list = from note in this.context.Notes
-                                   where (data.Id == noteId)
-                                   select note;
-
-                        foreach (var datas in list)
-                        {
-                            notes.Add(datas);
-                        }
+                        return result;
                     }
-                    return collaborator;
+                    else
+                    {
+                        throw new Exception();
+                    }
                 }
                 else
                 {
@@ -333,8 +338,8 @@ namespace RepositoryManager.Service
         /// <summary>
         /// remove the collaborator.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">Collaborator id.</param>
+        /// <returns>return result.</returns>
         public async Task<int> RemoveCollaboratorToNote(int id)
         {
             try
@@ -361,10 +366,10 @@ namespace RepositoryManager.Service
         }
 
         /// <summary>
-        /// 
+        ///  Delete multiple notes by id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">note ids.</param>
+        /// <returns>return success result.</returns>
         public async Task<int> BulkDelete(IList<int> id)
         {
             try

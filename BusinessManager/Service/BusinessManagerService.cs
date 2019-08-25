@@ -7,25 +7,31 @@
 
 namespace BusinessManager.Service
 {
-    using BusinessManager.Interface;
-    using CommanLayer.Model;
     using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
-    using RepositoryManager.Interface;
-    using Microsoft.AspNetCore.Http;
+    using BusinessManager.Interface;
     using CommanLayer.Enumerable;
+    using CommanLayer.Model;
+    using Microsoft.AspNetCore.Http;
+    using RepositoryManager.Interface;
     using ServiceStack.Redis;
 
+    /// <summary>
+    /// the business manager service.
+    /// </summary>
     public class BusinessManagerService : IBusinessManager
     {
-        //create reference of INotesRepository
+        /// <summary>
+        /// the unique key for redis cache.
+        /// </summary>
+        private const string Data = "data";
+
+        /// <summary>
+        /// create reference of INotesRepository
+        /// </summary>
         private INotesRepositoryManager repositoryManager;
-
-        //The data stored in redis cache is in form of key value pair or nosql format so here data is key
-        private const string data = "data";
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="BusinessManagerService"/> class.
         /// </summary>
@@ -39,24 +45,24 @@ namespace BusinessManager.Service
         /// Add the notes.
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         public async Task<int> AddNotes(NotesModel notesModel)
         {
-            //RepositoryManager layer method called
-            var result =await this.repositoryManager.AddNotes(notesModel);
+            ////RepositoryManager layer method called
+            var result = await this.repositoryManager.AddNotes(notesModel);
             return result;
         }
 
         /// <summary>
         /// Display All notes 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         public IList<NotesModel> GetAllNotes()
         {
             try
             {
                 ////RepositoryLayer method call
-                var Result =this.repositoryManager.GetAllNotes();
+                var Result = this.repositoryManager.GetAllNotes();
 
                 ////if result contains null it throw the exeption 
                 if (Result != null)
@@ -69,47 +75,46 @@ namespace BusinessManager.Service
                     throw new Exception();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex);
                 throw new Exception(ex.Message);
             }
         }
-        
+
         /// <summary>
-        /// Gets or sets the get notes.
+        /// get notes by user id and note type.
         /// </summary>
-        /// <param name="notesModel"></param>
-        /// <returns></returns>
-        /// <value>
-        /// The get notes.
-        /// </value>
+        /// <param name="userId">user id.</param>
+        /// <param name="noteType">note type.</param>
+        /// <returns> return result.</returns>
         public IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType)
         {
             try
             {
-                var cachekey = data + userId;
-                //// repositoryManager layer method called
-                // var Result =this.repositoryManager.GetNotesById(userId, noteType);
-
+                ////concate the userId and data string for unique key in redis cache.
+                var cachekey = Data + userId;
                 using (var redis = new RedisClient())
                 {
+                    ////clean the redis cache.
                     redis.Remove(cachekey);
 
                     if (redis.Get(cachekey) == null)
                     {
+                        //// repositoryManager layer method called
                         var noteData = this.repositoryManager.GetNotesById(userId, noteType);
                         if (noteData != null)
                         {
                             redis.Set(cachekey, userId);
                         }
+
                         return noteData;
                     }
                     else
                     {
                         IList<NotesModel> list = new List<NotesModel>();
                         var list1 = redis.Get(cachekey);
-                        //list.Add(list1);
+                        ////list.Add(list1);
                         return list;
                     }
                 }
@@ -123,9 +128,9 @@ namespace BusinessManager.Service
         /// <summary>
         /// Updates the notes.
         /// </summary>
-        /// <param name="notesModel"></param>
+        /// <param name="notesModel">notes model data.</param>
         /// <param name="id">The identifier.</param>
-        /// <returns></returns>
+        /// <returns> return result.</returns>
         public async Task<int> UpdateNotes(NotesModel notesModel, int id)
         {
             try
@@ -133,7 +138,7 @@ namespace BusinessManager.Service
                 var result = await this.repositoryManager.UpdateNotes(notesModel, id);
                 return result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -142,8 +147,8 @@ namespace BusinessManager.Service
         /// <summary>
         /// Delete the notes.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">notes id.</param>
+        /// <returns> return result.</returns>
         /// <value>
         /// The delete notes.
         /// </value>
@@ -151,11 +156,9 @@ namespace BusinessManager.Service
         {
             try
             {
-                ////Append the id
-                ////var cachekey = data + id;
-
                 if (!id.Equals(null))
                 {
+                    ////repositoryManager Layer method call.
                     var result = await this.repositoryManager.DeleteNotes(id);
                     return result;
                 }
@@ -175,8 +178,9 @@ namespace BusinessManager.Service
         /// </summary>
         /// <param name="formFile">The form file.</param>
         /// <param name="id">The identifier.</param>
-        /// <returns></returns>
+        /// <returns> return result.</returns>
         /// <exception cref="Exception">
+        /// throw exception.
         /// </exception>
         public async Task<string> ImageUpload(IFormFile formFile, int id)
         {
@@ -200,13 +204,12 @@ namespace BusinessManager.Service
                     throw new Exception();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
-
+        
         /// <summary>
         /// Adds the collaborator.
         /// </summary>
@@ -244,11 +247,11 @@ namespace BusinessManager.Service
         }
 
         /// <summary>
-        /// Get the collaborator data.
+        /// get the collaborators
         /// </summary>
-        /// <param name="email"></param>
-        /// <returns></returns>
-        public IList<CollaboratorModel> GetCollborators(int id)
+        /// <param name="id">collaborator id</param>
+        /// <returns> return result.</returns>
+        public IList<string> GetCollborators(int id)
         {
             try
             {
@@ -277,10 +280,10 @@ namespace BusinessManager.Service
         }
 
         /// <summary>
-        /// 
+        /// remove collaborator from notes
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">collaborator id.</param>
+        /// <returns>return result.</returns>
         public async Task<int> RemoveCollaboratorToNote(int id)
         {
             try
@@ -309,21 +312,21 @@ namespace BusinessManager.Service
         }
 
         /// <summary>
-        /// 
+        /// delete notes by multiple id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">List of id.</param>
+        /// <returns>return result.</returns>
         public async Task<int> BulkDelete(IList<int> id)
         {
             try
             {
-
                 if (!id.Equals(null))
                 {
                     ////NotesRepository Layer method called.
                     var result = await this.repositoryManager.BulkDelete(id);
                     if (!result.Equals(null))
                     {
+                        ////return result.
                         return result;
                     }
                     else
@@ -342,13 +345,21 @@ namespace BusinessManager.Service
             }
         }
 
+        /// <summary>
+        /// search notes or description by string.
+        /// </summary>
+        /// <param name="searchString">input string.</param>
+        /// <returns>return result.</returns>
         public IList<NotesModel> Search(string searchString)
         {
             try
             {
                 if (!searchString.Equals(null))
                 {
+                    ////notes list.
                     IList<NotesModel> result = new List<NotesModel>();
+
+                    ////repositoryManager Layer method call
                     result = this.repositoryManager.Search(searchString);
                     if (!result.Equals(null))
                     {
@@ -373,9 +384,10 @@ namespace BusinessManager.Service
         /// <summary>
         /// Reminders the specified user identifier.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <returns></returns>
+        /// <param name="noteId">The user identifier.</param>
+        /// <returns>return result.</returns>
         /// <exception cref="Exception">
+        /// throws exception
         /// </exception>
         public IList<NotesModel> Reminder(int noteId)
         {
@@ -383,6 +395,7 @@ namespace BusinessManager.Service
             {
                 if (!noteId.Equals(null))
                 {
+                    ////repositoryManager Layer method call
                     var Result = this.repositoryManager.Reminder(noteId);
                     return Result;
                 }
@@ -400,9 +413,10 @@ namespace BusinessManager.Service
         /// <summary>
         /// Determines whether the specified user identifier is pin.
         /// </summary>
-        /// <param name="noteId"></param>
-        /// <returns></returns>
+        /// <param name="noteId">note id.</param>
+        /// <returns>return result.</returns>
         /// <exception cref="Exception">
+        /// throw Exception.
         /// </exception>
         public IList<NotesModel> IsPin(int noteId)
         {
@@ -410,6 +424,7 @@ namespace BusinessManager.Service
             {
                 if (!noteId.Equals(null))
                 {
+                    ////repositoryManager Layer method call
                     var result = this.repositoryManager.IsPin(noteId);
                     return result;
                 }
@@ -427,14 +442,15 @@ namespace BusinessManager.Service
         /// <summary>
         /// Gets the type of the notes.
         /// </summary>
-        /// <param name="notesModel">The notes model.</param>
-        /// <returns></returns>
+        /// <param name="NoteType">The notes model.</param>
+        /// <returns>return result.</returns>
         public IList<NotesModel> GetNoteType(NoteTypeEnum NoteType)
         {
             try
             {
                 if (!NoteType.Equals(null))
                 {
+                    ////repositoryManager Layer method call
                     var result = this.repositoryManager.GetNoteType(NoteType);
                     return result;
                 }
@@ -448,6 +464,5 @@ namespace BusinessManager.Service
                 throw new Exception(ex.Message);
             }
         }
-
     }
 }

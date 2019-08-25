@@ -6,10 +6,9 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace CommanLayer.Enumerable
 {
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    /// <summary>
+    /// the enumeration class for note type.
+    /// </summary>
     public enum NoteTypeEnum
     {
         /// <summary>

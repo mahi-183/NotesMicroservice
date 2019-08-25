@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="NotesModel.cs" company="Bridgelabz">
+// <copyright file="LabelModel.cs" company="Bridgelabz">
 //   Copyright © 2019 Company="BridgeLabz"
 // </copyright>
 // <creator name="Mahesh Aurad"/>
@@ -11,6 +11,9 @@ namespace CommanLayer.Model
     using System.ComponentModel.DataAnnotations;
     using System.Text;
 
+    /// <summary>
+    /// the Label model class.
+    /// </summary>
     public class LabelModel
     {
         /// <summary>
@@ -38,10 +41,10 @@ namespace CommanLayer.Model
         public string UserId { get; set; }
 
         /// <summary>
-        /// Gets or sets the lebel.
+        /// Gets or sets the label.
         /// </summary>
         /// <value>
-        /// The lebel.
+        /// The label.
         /// </value>
         public string Lebel { get; set; }
 
@@ -51,8 +54,8 @@ namespace CommanLayer.Model
         /// <value>
         /// The created date.
         /// </value>
-        //[Display(Name = "Modified Date")]
-        //[DataType(DataType.Date)]
+        //// [Display(Name = "Modified Date")]
+        //// [DataType(DataType.Date)]
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>

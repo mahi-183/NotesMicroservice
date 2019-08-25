@@ -7,19 +7,28 @@
 
 namespace BusinessManager.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using BusinessManager.Interface;
     using CommanLayer.Model;
     using RepositoryManager.Interface;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
 
+    /// <summary>
+    /// The Label business manager service class.
+    /// </summary>
     public class LabelBusinessService : ILabelBusinessManager
     {
-        public ILabelRepositoryManager repositoryManager;
+        /// <summary>
+        /// the cache key for unique
+        /// </summary>
         private const string data = "data";
 
+        /// <summary>
+        /// create reference of repositoryManager layer.
+        /// </summary>
+        private ILabelRepositoryManager repositoryManager;
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="LabelBusinessService"/> class.
         /// </summary>
@@ -33,8 +42,9 @@ namespace BusinessManager.Service
         /// Adds the label.
         /// </summary>
         /// <param name="labelModel">The label model.</param>
-        /// <returns></returns>
+        /// <returns> return result.</returns>
         /// <exception cref="Exception">
+        /// throw exception.
         /// </exception>
         public async Task<int> AddLabel(LabelModel labelModel)
         {
@@ -42,7 +52,7 @@ namespace BusinessManager.Service
             {
                 if (!labelModel.Equals(null))
                 {
-                    //repositoryManager layer method called
+                    ////repositoryManager layer method called
                     var result = await this.repositoryManager.AddLabel(labelModel);
                     if (result > 0)
                     {
@@ -67,14 +77,15 @@ namespace BusinessManager.Service
         /// <summary>
         /// Gets all label.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>return all labels.</returns>
         /// <exception cref="Exception">
+        /// throw exception
         /// </exception>
         public IList<LabelModel> GetAllLabel()
         {
             try
             {
-                //repositoryManager layer method called
+                ////repositoryManager layer method called
                 var result = this.repositoryManager.GetAllLabel();
                 if (!result.Equals(null))
                 {
@@ -94,15 +105,15 @@ namespace BusinessManager.Service
         /// <summary>
         /// Gets the label by identifier.
         /// </summary>
-        /// <param name="LabelId">The label identifier.</param>
-        /// <returns></returns>
-        public IList<LabelModel> GetLabelById(string UserId)
+        /// <param name="userId">The label identifier.</param>
+        /// <returns> return result.</returns>
+        public IList<LabelModel> GetLabelById(string userId)
         {
-            if (UserId.Equals(null))
+            if (userId.Equals(null))
             {
                 try
                 {
-                    var result = this.repositoryManager.GetLabelById(UserId);
+                    var result = this.repositoryManager.GetLabelById(userId);
                     if (!result.Equals(null))
                     {
                         return result;
@@ -122,21 +133,24 @@ namespace BusinessManager.Service
                 throw new Exception();
             }
         }
+
         /// <summary>
         /// Updates the label.
         /// </summary>
         /// <param name="labelModel">The label model.</param>
-        /// <param name="LabelId"></param>
-        /// <returns></returns>
+        /// <param name="labelId">Label id.</param>
+        /// <returns>return success result.</returns>
         /// <exception cref="Exception">
+        /// throw exceptions.
         /// </exception>
-        public async Task<int> UpdateLabel(LabelModel labelModel, int LabelId)
+        public async Task<int> UpdateLabel(LabelModel labelModel, int labelId)
         {
             try
             {
-                if (labelModel.Equals(null) && LabelId.Equals(null))
+                if (labelModel.Equals(null) && labelId.Equals(null))
                 {
-                    var result =await this.repositoryManager.UpdateLabel(labelModel, LabelId);
+                    ////repositoryManager Layer method call
+                    var result = await this.repositoryManager.UpdateLabel(labelModel, labelId);
                     if (result > 0)
                     {
                         return result;
@@ -160,25 +174,20 @@ namespace BusinessManager.Service
         /// <summary>
         /// Deletes the label.
         /// </summary>
-        /// <param name="LabelId">The label identifier.</param>
-        /// <returns></returns>
+        /// <param name="labelId">The label identifier.</param>
+        /// <returns>return result.</returns>
         /// <exception cref="Exception">
+        /// throw exception.
         /// </exception>
-        public async Task<int> DeleteLabel(int LabelId)
+        public async Task<int> DeleteLabel(int labelId)
         {
-            var cacheKey = data + LabelId;
+            var cacheKey = data + labelId;
             try
             {
-                if (!LabelId.Equals(null))
+                if (!labelId.Equals(null))
                 {
-                    //using (var redis = new RedisClient())
-                    //{
-                    //    redis.Remove(cacheKey);
-                    //}
-                    //this.GetAllLabel();
-
-                    var result = await this.repositoryManager.DeleteLabel(LabelId);
-                    //return result;
+                    ////repositoryManager Layer method call
+                    var result = await this.repositoryManager.DeleteLabel(labelId);
                     if (result > 0)
                     {
                         return result;
@@ -197,7 +206,6 @@ namespace BusinessManager.Service
             {
                 throw new Exception(ex.Message);
             }
-
         }
     }
 }

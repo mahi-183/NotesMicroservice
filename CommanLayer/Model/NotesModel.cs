@@ -12,6 +12,9 @@ namespace CommanLayer.Model
     using System.Text;
     using CommanLayer.Enumerable;
 
+    /// <summary>
+    /// notes model class.
+    /// </summary>
     public class NotesModel
     {
         /// <summary>
@@ -60,8 +63,8 @@ namespace CommanLayer.Model
         /// <value>
         /// The image.
         /// </value>
-        // [Required(ErrorMessage = "Please select file.")]
-        // [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$", ErrorMessage = "Only Image files allowed.")]
+        //// [Required(ErrorMessage = "Please select file.")]
+        //// [RegularExpression(@"([a-zA-Z0-9\s_\\.\-:])+(.png|.jpg|.gif)$", ErrorMessage = "Only Image files allowed.")]
         public string Image { get; set; }
 
         /// <summary>
@@ -78,8 +81,6 @@ namespace CommanLayer.Model
         /// <value>
         /// The created date.
         /// </value>
-        //[Display(Name = "Create Date")]
-        //[DataType(DataType.Date)]
         public DateTime? CreatedDate { get; set; }
 
         /// <summary>
@@ -88,8 +89,6 @@ namespace CommanLayer.Model
         /// <value>
         /// The modified date.
         /// </value>
-        //[Display(Name = "Modified Date")]
-        //[DataType(DataType.Date)]
         public DateTime? ModifiedDate { get; set; }
 
         /// <summary>
