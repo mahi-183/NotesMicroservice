@@ -16,14 +16,13 @@ namespace NotesMicroservice.Controllers
     using Microsoft.AspNetCore.Authorization;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
-
-
+    
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
     public class NotesController : ControllerBase
     {
-        //create reference of businessLayer method
+        ////create reference of businessLayer method
         public IBusinessManager businessManager;
 
         /// <summary>
@@ -42,24 +41,24 @@ namespace NotesMicroservice.Controllers
         /// <returns></returns>
         [HttpPost]
         [Route("Add")]
-        public async Task<IActionResult> AddNotes( NotesModel notesModel)
+        public async Task<IActionResult> AddNotes(NotesModel notesModel)
         {
             try
             {
-                //BusinessLayer method call
+                ////BusinessLayer method call
                 var result = await this.businessManager.AddNotes(notesModel);
                 
-                //if result is null then it throw the error message 
+                ////if result is null then it throw the error message 
                 if (!result.Equals(null))
                 {
-                    return Ok(new { result });
+                    return this.Ok(new { result });
                 }
                 else
                 {
-                    return BadRequest(new { Message = "Notes not added"});
+                    return this.BadRequest(new { Message = "Notes not added" });
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 throw new Exception(ex.Message);
@@ -76,7 +75,7 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
-                //BusinessLayer method call
+                ////BusinessLayer method call
                 var result = this.businessManager.GetAllNotes();
                 return result;
             }
@@ -98,7 +97,7 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
-                //BusinessLayer method call
+                ////BusinessLayer method call
                 var result = this.businessManager.GetNotesById(userId, noteType);
                 return result;
             }
@@ -109,19 +108,54 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get the notes by userId.
         /// </summary>
-        /// <param name="notesModel"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="userId">user id.</param>
+        /// <returns>return the result.</returns>
+        [HttpGet]
+        [Route("GetNotesById")]
+        public IList<NotesModel> GetNotesByUserId(string userId)
+        {
+            try
+            {
+                if (!userId.Equals(null))
+                {
+                    ////BusinessLayer method call
+                    var result = this.businessManager.GetNotesByUserId(userId);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception("The data not fetched");
+                    }
+                }
+                else
+                {
+                    throw new Exception("The user id is not valid");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// update the notes
+        /// </summary>
+        /// <param name="notesModel">notes model.</param>
+        /// <param name="id">notes id.</param>
+        /// <returns>return the result.</returns>
         [HttpPost]
         [Route("UpdateNotes")]
         public async Task<int> UpdateNotes(NotesModel notesModel, int id)
         {
             try
             {
-                //BusinessLayer method call
-                var result =await this.businessManager.UpdateNotes(notesModel, id);
+                ////BusinessLayer method call
+                var result = await this.businessManager.UpdateNotes(notesModel, id);
                 return result;
             }
             catch (Exception ex)
@@ -141,7 +175,7 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
-                //BusinessLayer method call
+                ////BusinessLayer method call
                 var result = await this.businessManager.DeleteNotes(id);
                 return result;
             }
@@ -152,26 +186,21 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Upload the image on cloudinary.
         /// </summary>
-        /// <param name="formFile"></param>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="formFile">image file</param>
+        /// <param name="id">note id.</param>
+        /// <returns>return url.</returns>
         [HttpPost]
         [Route("UploadImage")]
         public async Task<IActionResult> ImageUpload(IFormFile formFile, int id)
         {
             try
             {
-                if (!ModelState.IsValid)
-                {
-                    return BadRequest(ModelState);   // This is the line that causes the intellisense error
-                }
-
-                //BusinessLayer method call
+                ////BusinessLayer method call
                 var ImageUrl = await this.businessManager.ImageUpload(formFile, id);
                 
-                //if the imageurl is null then it 
+                ////if the imageurl is null then it 
                 if (!ImageUrl.Equals(null))
                 {
                     return this.Ok(new { ImageUrl });
@@ -188,20 +217,20 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// reminder.
         /// </summary>
-        /// <param name="noteId"></param>
-        /// <returns></returns>
+        /// <param name="noteId">note id.</param>
+        /// <returns>return result.</returns>
         [HttpGet]
         [Route("Reminder")]
         public IActionResult Reminder(int noteId)
         {
             try
             {
-                //BusinessLager method call
+                ////BusinessLager method call
                 var result = this.businessManager.Reminder(noteId);
                 
-                //if result null then return result NotFount message
+                ////if result null then return result NotFount message
                 if (!result.Equals(null))
                 {
                     return this.Ok(new { result });
@@ -218,26 +247,26 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Is pin.
         /// </summary>
-        /// <param name="noteId"></param>
-        /// <returns></returns>
+        /// <param name="noteId">note id.</param>
+        /// <returns>return result.</returns>
         [HttpGet]
         [Route("Pin")]
         public IActionResult IsPin(int noteId)
         {
             try
             {
-                //BusinessLayer method call
+                ////BusinessLayer method call
                 var result = this.businessManager.IsPin(noteId);
                 if (!result.Equals(null))
                 {
-                    //return result
+                    ////return result
                     return this.Ok(new { result });
                 }
                 else
                 {
-                    return BadRequest(new { message = "Not pined" });
+                    return this.BadRequest(new { message = "Not pined" });
                 }
             }
             catch (Exception ex)
@@ -247,17 +276,17 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// note type.
         /// </summary>
-        /// <param name="NoteType"></param>
-        /// <returns></returns>
+        /// <param name="NoteType">note type.</param>
+        /// <returns>return result.</returns>
         [HttpGet]
         [Route("GetNoteType")]
         public IActionResult GetNoteType(NoteTypeEnum NoteType)
         {
             try
             {
-                //BusinessLayer method call
+                ////BusinessLayer method call
                 var result = this.businessManager.GetNoteType(NoteType);
                 if (!result.Equals(null))
                 {
@@ -268,17 +297,17 @@ namespace NotesMicroservice.Controllers
                     throw new Exception();
                 }
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
         
         /// <summary>
-        /// 
+        /// add collaborator 
         /// </summary>
-        /// <param name="collaboratorModel"></param>
-        /// <returns></returns>
+        /// <param name="collaboratorModel">collaborator model data.</param>
+        /// <returns>return result.</returns>
         [HttpPost]
         [Route("AddCollaborator")]
         public async Task<IActionResult> AddCollabarator(CollaboratorModel collaboratorModel)
@@ -296,7 +325,7 @@ namespace NotesMicroservice.Controllers
                 else
                 {
                     ////return the failer result
-                    return BadRequest(new { message = "data is not valid" });
+                    return this.BadRequest(new { message = "data is not valid" });
                 }
             }
             catch (Exception ex)
@@ -307,10 +336,10 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get collaborator.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">collaborator id.</param>
+        /// <returns>return result.</returns>
         [HttpGet]
         [Route("GetCollaborator")]
         public IActionResult GetCollaborator(int id)
@@ -328,7 +357,7 @@ namespace NotesMicroservice.Controllers
                     }
                     else
                     {
-                        return BadRequest(new { message = "The collaborator not get" });
+                        return this.BadRequest(new { message = "The collaborator not get" });
                     }
                 }
                 else
@@ -343,45 +372,90 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Update the collaborator.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="noteId">note id.</param>
+        /// <param name="id">collaborator id.</param>
+        /// <param name="notesModel">notes model data.</param>
+        /// <returns>return the result.</returns>
+        [HttpPost]
+        [Route("UpdateCollaborator")]
+        public IActionResult UpdateCollaborator(int noteId, int id, NotesModel notesModel)
+        {
+            try
+            {
+                if (!id.Equals(null))
+                {
+                    ////BusinessManager layer method call
+                    var result = this.businessManager.UpdateCollaborator(noteId, id, notesModel);
+                    if (!result.Equals(null))
+                    {
+                        ////return the result.
+                        return this.Ok(new { result });
+                    }
+                    else
+                    {
+                        return this.BadRequest(new { message = "The collaborator is not updated successfuly" });
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// remove collaborator.
+        /// </summary>
+        /// <param name="id">collaborator id.</param>
+        /// <returns>return the result.</returns>
         [HttpPost]
         [Route("RemoveCollaborator")]
         public async Task<IActionResult> RemoveCollaboratorToNote(int id)
         {
             try
             {
+                ////check the id is null or not
                 if (!id.Equals(null))
                 {
                     ////businessManager Layer method Called
                     var result = await this.businessManager.RemoveCollaboratorToNote(id);
+
+                    ////if result is null then throw the exception message
                     if (!result.Equals(null))
                     {
+                        ////return the result.
                         return this.Ok(new { result });
                     }
                     else
                     {
-                        throw new Exception();
+                        ////throw the exception
+                        throw new Exception("The collaborator is not removed");
                     }
                 }
                 else
                 {
-                    throw new Exception();
+                    ////throw the exception message.
+                    throw new Exception("the note id is null");
                 }
             }
             catch (Exception ex)
             {
+                ////throw the Exception.
                 throw new Exception(ex.Message);
             }
         }
 
         /// <summary>
-        /// 
+        /// delete the multiple notes
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">note id.</param>
+        /// <returns>return result.</returns>
         [HttpPost]
         [Route("BulkDelete")]
         public async Task<IActionResult> BulkDelete(IList<int> id)
@@ -394,6 +468,7 @@ namespace NotesMicroservice.Controllers
                     var result = await this.businessManager.BulkDelete(id);
                     if (!result.Equals(null))
                     {
+                        ////return result.
                         return this.Ok(new { result });
                     }
                     else
@@ -413,10 +488,10 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Search the notes title and description by the string
         /// </summary>
-        /// <param name="searchString"></param>
-        /// <returns></returns>
+        /// <param name="searchString">serach string.</param>
+        /// <returns>return the notes list.</returns>
         [HttpPost]
         [Route("Search")]
         public IActionResult Search(string searchString)
@@ -425,13 +500,16 @@ namespace NotesMicroservice.Controllers
             {
                 if (!searchString.Equals(null))
                 {
+                    ////businessManager Layer method call.
                     var result = this.businessManager.Search(searchString);
+                    ////result is not null then return result.
                     if (!result.Equals(null))
                     {
                         return this.Ok(new { result });
                     }
                     else
                     {
+                        ////return the bad request.
                         return this.BadRequest(new { Message = "Entered search string is emplty" });
                     }
                 }
@@ -442,6 +520,7 @@ namespace NotesMicroservice.Controllers
             }
             catch (Exception ex)
             {
+                ////throw the exception.
                 throw new Exception(ex.Message);
             }
         }

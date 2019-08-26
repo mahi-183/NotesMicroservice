@@ -39,6 +39,13 @@ namespace BusinessManager.Interface
         IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType);
 
         /// <summary>
+        /// get notes by user id.
+        /// </summary>
+        /// <param name="userId">user id.</param>
+        /// <returns>return result.</returns>
+        IList<NotesModel> GetNotesByUserId(string userId);
+
+        /// <summary>
         /// update the notes model
         /// </summary>
         /// <param name="notesModel">notes model data.</param>
@@ -74,6 +81,15 @@ namespace BusinessManager.Interface
         /// <param name="id">collaborator id</param>
         /// <returns> return result.</returns>
         IList<string> GetCollborators(int id);
+
+        /// <summary>
+        /// Update Collaborator.
+        /// </summary>
+        /// <param name="noteId">note id.</param>
+        /// <param name="id">collaborator id.</param>
+        /// <param name="notesModel">notes model.</param>
+        /// <returns>return result.</returns>
+        Task<int> UpdateCollaborator(int noteId, int id, NotesModel notesModel);
 
         /// <summary>
         /// Remove the collaborator.

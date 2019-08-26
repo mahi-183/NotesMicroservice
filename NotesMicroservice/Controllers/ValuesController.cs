@@ -1,14 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Threading.Tasks;
-using CommanLayer.Model;
-using Microsoft.AspNetCore.Mvc;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="ValuesController.cs" company="Bridgelabz">
+//   Copyright © 2019 Company="BridgeLabz"
+// </copyright>
+// <creator name="Mahesh Aurad"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace NotesMicroservice.Controllers
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
+    using CommanLayer.Model;
+    using Microsoft.AspNetCore.Mvc;
+
     [Route("api/[controller]")]
     [ApiController]
     public class ValuesController : ControllerBase
@@ -41,7 +46,7 @@ namespace NotesMicroservice.Controllers
                     client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", strArr[1]);
 
                     //// calling api from other services
-                    var response = await client.GetAsync("https://localhost:44330/api/AccountUser/GetUser" + id);
+                    var response = await client.GetAsync("https://localhost:44330/api/AccountUser/GetUser?userId=" + id);
                     response.EnsureSuccessStatusCode();
                     product = await response.Content.ReadAsAsync<IList<ApplicationUserModel>>();
                 }
@@ -53,7 +58,12 @@ namespace NotesMicroservice.Controllers
                 throw new Exception(ex.Message);
             }
         }
-        // GET api/values/5
+
+        /// <summary>
+        /// get api.
+        /// </summary>
+        /// <param name="id">id.</param>
+        /// <returns>return result.</returns>
         [HttpGet("{id}")]
         public ActionResult<string> Get(int id)
         {

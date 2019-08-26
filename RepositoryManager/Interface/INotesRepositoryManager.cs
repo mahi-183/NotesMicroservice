@@ -4,16 +4,13 @@
 // </copyright>
 // <creator name="Mahesh Aurad"/>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace RepositoryManager.Interface
 {
+    using System.Collections.Generic;
+    using System.Threading.Tasks;
     using CommanLayer.Enumerable;
     using CommanLayer.Model;
     using Microsoft.AspNetCore.Http;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
 
     public interface INotesRepositoryManager
     {
@@ -21,35 +18,42 @@ namespace RepositoryManager.Interface
         /// Adds the notes.
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         Task<int> AddNotes(NotesModel notesModel);
 
         /// <summary>
         /// Gets all notes.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         IList<NotesModel> GetAllNotes();
 
         /// <summary>
         /// Gets the notes.
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType);
+
+        /// <summary>
+        /// get notes by user id.
+        /// </summary>
+        /// <param name="userId">user id.</param>
+        /// <returns>return result.</returns>
+        IList<NotesModel> GetNotesByUserId(string userId);
 
         /// <summary>
         /// Updates the notes.
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
         /// <param name="id">The identifier.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         Task<int> UpdateNotes(NotesModel notesModel, int id);
 
         /// <summary>
         /// Deletes the notes.
         /// </summary>
         /// <param name="id">The identifier.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         Task<int> DeleteNotes(int id);
 
         /// <summary>
@@ -57,10 +61,9 @@ namespace RepositoryManager.Interface
         /// </summary>
         /// <param name="formFile">The form file.</param>
         /// <param name="id">The identifier.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         Task<string> ImageUpload(IFormFile formFile, int id);
-
-
+        
         /// <summary>
         /// Adds the collaborator.
         /// </summary>
@@ -76,47 +79,54 @@ namespace RepositoryManager.Interface
         IList<string> GetCollborators(int id);
 
         /// <summary>
-        /// 
+        /// Remove Collaborator method.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">collaborator id.</param>
+        /// <returns>return result.</returns>
         Task<int> RemoveCollaboratorToNote(int id);
 
         /// <summary>
-        /// 
+        /// update the collaborator.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="noteId">note id.</param>
+        /// <param name="id">note id.</param>
+        /// <param name="notesModel">notes model.</param>
+        /// <returns>return result.</returns>
+        Task<int> UpdateCollaborator(int noteId, int id, NotesModel notesModel);
+
+        /// <summary>
+        /// Delete the multiple notes.
+        /// </summary>
+        /// <param name="id">notes id.</param>
+        /// <returns>return result.</returns>
         Task<int> BulkDelete(IList<int> id);
 
         /// <summary>
-        /// 
+        /// search the title description by string.
         /// </summary>
-        /// <param name="searchString"></param>
-        /// <returns></returns>
+        /// <param name="searchString">search string.</param>
+        /// <returns>return result.</returns>
         IList<NotesModel> Search(string searchString);
-        
+
         /// <summary>
         /// Reminders the specified user identifier.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <returns></returns>
+        /// <param name="noteId">The note identifier.</param>
+        /// <returns>return result.</returns>
         IList<NotesModel> Reminder(int noteId);
 
         /// <summary>
         /// Determines whether the specified user identifier is pin.
         /// </summary>
-        /// <param name="userId">The user identifier.</param>
-        /// <returns></returns>
+        /// <param name="noteId">The note identifier.</param>
+        /// <returns>return result.</returns>
         IList<NotesModel> IsPin(int noteId);
 
         /// <summary>
         /// Gets the type of the note.
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
-        /// <returns></returns>
+        /// <returns>return result</returns>
         IList<NotesModel> GetNoteType(NoteTypeEnum NoteType);
-
-
     }
 }

@@ -7,11 +7,12 @@
 namespace RepositoryManager.Interface
 {
     using CommanLayer.Model;
-    using System;
     using System.Collections.Generic;
-    using System.Text;
     using System.Threading.Tasks;
 
+    /// <summary>
+    /// the ILabelRepositoryManager interface
+    /// </summary>
     public interface ILabelRepositoryManager
     {
         /// <summary>
@@ -30,23 +31,23 @@ namespace RepositoryManager.Interface
         /// <summary>
         /// Gets the label by identifier.
         /// </summary>
-        /// <param name="LabelId">The label identifier.</param>
+        /// <param name="userId">The uer identifier.</param>
         /// <returns></returns>
-        IList<LabelModel> GetLabelById(string UserId);
+        IList<LabelModel> GetLabelById(string userId);
 
         /// <summary>
         /// Updates the label.
         /// </summary>
         /// <param name="labelModel">The label model.</param>
-        /// <param name="NoteId">The note identifier.</param>
+        /// <param name="labeld">The label identifier.</param>
         /// <returns></returns>
-        Task<int> UpdateLabel(LabelModel labelModel, int LabelId);
+        Task<int> UpdateLabel(LabelModel labelModel, int labelId);
 
         /// <summary>
         /// Deletes the label.
         /// </summary>
-        /// <param name="Labeld">The labeld.</param>
+        /// <param name="labeld">The labeld.</param>
         /// <returns></returns>
-        Task<int> DeleteLabel(int Labeld);
+        Task<int> DeleteLabel(int labeld);
     }
 }

@@ -1,75 +1,82 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using BusinessManager.Interface;
-using BusinessManager.Service;
-using CommanLayer.Model;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.AspNetCore.Authentication.OpenIdConnect;
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.JsonPatch.Operations;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
-using Microsoft.Extensions.Options;
-using RepositoryManager.DBContext;
-using RepositoryManager.Interface;
-using RepositoryManager.Service;
-using Swashbuckle.AspNetCore.SwaggerGen;
-using Swashbuckle.AspNetCore.Swagger;
-using Operation = Swashbuckle.AspNetCore.Swagger.Operation;
-using System.Text;
-using Microsoft.IdentityModel.Tokens;
-using NotesMicroservice.Controllers;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="Startup.cs" company="Bridgelabz">
+//   Copyright © 2019 Company="BridgeLabz"
+// </copyright>
+// <creator name="Mahesh Aurad"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace NotesMicroservice
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Text;
+    using BusinessManager.Interface;
+    using BusinessManager.Service;
+    using Microsoft.AspNetCore.Authentication.JwtBearer;
+    using Microsoft.AspNetCore.Builder;
+    using Microsoft.AspNetCore.Hosting;
+    using Microsoft.AspNetCore.Mvc;
+    using Microsoft.EntityFrameworkCore;
+    using Microsoft.Extensions.Configuration;
+    using Microsoft.Extensions.DependencyInjection;
+    using Microsoft.IdentityModel.Tokens;
+    using RepositoryManager.DBContext;
+    using RepositoryManager.Interface;
+    using RepositoryManager.Service;
+    using Swashbuckle.AspNetCore.Swagger;
+    using Swashbuckle.AspNetCore.SwaggerGen;
+    using Operation = Swashbuckle.AspNetCore.Swagger.Operation;
+
+    /// <summary>
+    /// startup class of our application.
+    /// </summary>
     public class Startup
     {
+        /// <summary>
+        /// instance initialize.
+        /// </summary>
+        /// <param name="configuration">initialize configuration.</param>
         public Startup(IConfiguration configuration)
         {
-            Configuration = configuration;
+            this.Configuration = configuration;
         }
 
+        /// <summary>
+        /// the Configuration
+        /// </summary>
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to add services to the container.
+        /// </summary>
+        /// <param name="services">service.</param>
         public void ConfigureServices(IServiceCollection services)
         {
-  
             services.AddTransient<INotesRepositoryManager, NotesRepositoryManager>();
             services.AddTransient<IBusinessManager, BusinessManagerService>();
 
             services.AddTransient<ILabelRepositoryManager, LabelRepositoryService>();
             services.AddTransient<ILabelBusinessManager, LabelBusinessService>();
 
-            //Get Connection to database
+            ////Get Connection to database
             services.AddDbContext<AuthenticationContext>(options =>
                options.UseSqlServer(this.Configuration.GetConnectionString("IdentityConnection")));
             
-            //Add swagger 
+            ////Add swagger 
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyFandooApp", Version = "v1" ,Description = "Fandoo App" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "MyFandooApp", Version = "v1" , Description = "Fandoo App" });
                 c.OperationFilter<FileUploadedOperation>();
             });
             
-            //Add Authorization
+            ////Add Authorization
             services.AddAuthorization(options =>
             {
                 options.AddPolicy("User", policy =>
                     policy.RequireClaim("Id"));
             });
 
-            //Jwt Authentication
-            var key = Encoding.UTF8.GetBytes(Configuration["ApplicationSettings:JWT_Secret"].ToString());
+            ////Jwt Authentication
+            var key = Encoding.UTF8.GetBytes(this.Configuration["ApplicationSettings:JWT_Secret"].ToString());
             services.AddAuthentication(x =>
             {
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -92,8 +99,12 @@ namespace NotesMicroservice
             
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
         }
-
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        
+        /// <summary>
+        /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+        /// </summary>
+        /// <param name="app">app param.</param>
+        /// <param name="env">env param.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())
@@ -102,11 +113,11 @@ namespace NotesMicroservice
             }
             else
             {
-                // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+                ////The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
                 app.UseHsts();
             }
 
-            // Enable middleware to serve generated Swagger as a JSON endpoint.
+            ////Enable middleware to serve generated Swagger as a JSON endpoint.
             app.UseSwagger();
 
             app.UseSwaggerUI(options =>
@@ -120,6 +131,9 @@ namespace NotesMicroservice
         }
     }
      
+    /// <summary>
+    /// authorization header for swagger 
+    /// </summary>
     public class FileUploadedOperation : IOperationFilter
     {
         /// <summary>

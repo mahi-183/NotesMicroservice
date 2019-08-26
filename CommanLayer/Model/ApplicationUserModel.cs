@@ -6,6 +6,7 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace CommanLayer.Model
 {
+    using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
 
     /// <summary>
@@ -13,6 +14,12 @@ namespace CommanLayer.Model
     /// </summary>
     public class ApplicationUserModel 
     {
+
+        /// <summary>
+        /// Gets or sets the userId.
+        /// </summary>
+        public string userId { get; set; }
+
         /// <summary>
         /// Gets or sets the first name.
         /// </summary>
@@ -30,6 +37,17 @@ namespace CommanLayer.Model
         /// </value>
         [Column(TypeName = "nvarchar(150)")]
         public string LastName { get; set; }
+
+        /// <summary>
+        /// Gets or sets the EmailId. 
+        /// </summary>
+        [Required]
+        [EmailAddress]
+        public string EmailId
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// Gets or sets the image.

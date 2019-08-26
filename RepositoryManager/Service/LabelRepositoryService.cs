@@ -6,17 +6,22 @@
 // --------------------------------------------------------------------------------------------------------------------
 namespace RepositoryManager.Service
 {
+    using System;
+    using System.Collections.Generic;
+    using System.Linq;
+    using System.Threading.Tasks;
     using CommanLayer.Model;
     using RepositoryManager.DBContext;
     using RepositoryManager.Interface;
-    using System;
-    using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
-    using System.Linq;
 
+    /// <summary>
+    /// the Label Repository service
+    /// </summary>
     public class LabelRepositoryService : ILabelRepositoryManager
     {
+        /// <summary>
+        /// the authenticationContext reference created.
+        /// </summary>
         private readonly AuthenticationContext authenticationContext;
 
         /// <summary>
@@ -32,8 +37,8 @@ namespace RepositoryManager.Service
         /// Adds the label.
         /// </summary>
         /// <param name="labelModel">The label model.</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
         public Task<int> AddLabel(LabelModel labelModel)
         {
             try
@@ -58,8 +63,8 @@ namespace RepositoryManager.Service
         /// <summary>
         /// Gets all notes.
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw new exception.</exception>
         public IList<LabelModel> GetAllLabel()
         {
             try
@@ -71,6 +76,7 @@ namespace RepositoryManager.Service
                 {
                     list.Add(data);
                 }
+
                 return list;
             }
             catch (Exception ex)
@@ -83,7 +89,7 @@ namespace RepositoryManager.Service
         /// Gets the label by identifier.
         /// </summary>
         /// <param name="LabelId">The label identifier.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         public IList<LabelModel> GetLabelById(string UserId)
         {
             try
@@ -96,20 +102,22 @@ namespace RepositoryManager.Service
                 {
                     list.Add(data);
                 }
+
                 return list;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
+
         /// <summary>
         /// Updates the label.
         /// </summary>
         /// <param name="labelModel">The label model.</param>
-        /// <param name="UserId"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <param name="UserId">user id.</param>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
         public async Task<int> UpdateLabel(LabelModel labelModel, int LabelId)
         {
             try
@@ -136,14 +144,14 @@ namespace RepositoryManager.Service
         /// Deletes the label.
         /// </summary>
         /// <param name="LabelId">The label identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        public async Task<int> DeleteLabel(int LabelId)
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
+        public async Task<int> DeleteLabel(int labelId)
         {
             try
             {
                 var data = (from label in this.authenticationContext.Label
-                           where label.Id == LabelId
+                           where label.Id == labelId
                            select label).FirstOrDefault();
                 this.authenticationContext.Label.Remove(data);
                 var result = await this.authenticationContext.SaveChangesAsync();

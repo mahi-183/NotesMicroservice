@@ -1,11 +1,24 @@
-﻿using System;
-using Microsoft.EntityFrameworkCore.Metadata;
-using Microsoft.EntityFrameworkCore.Migrations;
-
+﻿// --------------------------------------------------------------------------------------------------------------------
+// <copyright file="FandoosNotes.cs" company="Bridgelabz">
+//   Copyright © 2019 Company="BridgeLabz"
+// </copyright>
+// <creator name="Mahesh Aurad"/>
+// --------------------------------------------------------------------------------------------------------------------
 namespace RepositoryManager.Migrations
 {
+    using System;
+    using Microsoft.EntityFrameworkCore.Metadata;
+    using Microsoft.EntityFrameworkCore.Migrations;
+
+    /// <summary>
+    /// the fandoo migration.
+    /// </summary>
     public partial class FandoosNotes : Migration
     {
+        /// <summary>
+        /// the migration method
+        /// </summary>
+        /// <param name="migrationBuilder">the migration.</param>
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(

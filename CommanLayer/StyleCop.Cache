@@ -98,10 +98,6 @@
     </timestamps>
     <violations />
   </sourcecode>
-  <project key="855947196">
-    <configuration>
-    </configuration>
-  </project>
   <sourcecode name="ApplicationUserModel.cs" parser="StyleCop.CSharp.CsParser">
     <timestamps>
       <styleCop>2019/04/09 10:02:57.906</styleCop>
@@ -154,4 +150,8 @@
       </violation>
     </violations>
   </sourcecode>
+  <project key="855947196">
+    <configuration>
+    </configuration>
+  </project>
 </stylecopresultscache>

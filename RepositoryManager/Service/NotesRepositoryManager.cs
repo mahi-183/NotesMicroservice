@@ -4,21 +4,21 @@
 // </copyright>
 // <creator name="Mahesh Aurad"/>
 // --------------------------------------------------------------------------------------------------------------------
-
 namespace RepositoryManager.Service
 {
+    using CommanLayer;
+    using CommanLayer.Enumerable;
     using CommanLayer.Model;
-    using Microsoft.AspNetCore.Identity;
+    using Microsoft.AspNetCore.Http;
+    using Newtonsoft.Json;
     using RepositoryManager.DBContext;
     using RepositoryManager.Interface;
     using System;
     using System.Collections.Generic;
-    using System.Text;
-    using System.Threading.Tasks;
     using System.Linq;
-    using Microsoft.AspNetCore.Http;
-    using CommanLayer;
-    using CommanLayer.Enumerable;
+    using System.Net.Http;
+    using System.Net.Http.Headers;
+    using System.Threading.Tasks;
 
     /// <summary>
     /// NotesRepositoryManager class implements the interface methods like AddNotes, DeleteNotes, UpdateNotes and GetNotes
@@ -26,7 +26,9 @@ namespace RepositoryManager.Service
     /// <seealso cref="INotesRepositoryManager" />
     public class NotesRepositoryManager : INotesRepositoryManager
     {
-      
+        /// <summary>
+        /// the authentication context reference created.
+        /// </summary>
         private readonly AuthenticationContext context;
 
         /// <summary>
@@ -42,11 +44,10 @@ namespace RepositoryManager.Service
         /// <summary>
         /// AddNotes method is for adding the notes to the databaase
         /// </summary>
-        /// <param name="notesModel"></param>
-        /// <returns></returns>
-        public async Task<int> AddNotes( NotesModel notesModel)
+        /// <param name="notesModel">notes model.</param>
+        /// <returns>return result.</returns>
+        public async Task<int> AddNotes(NotesModel notesModel)
         {
-            
                 NotesModel note = new NotesModel()
                 {
                     UserId = notesModel.UserId,
@@ -59,11 +60,12 @@ namespace RepositoryManager.Service
                     noteType = notesModel.noteType,
                     IsPin = notesModel.IsPin
                 };
+
             try
             {
                 this.context.Notes.Add(note);
                 int result = await this.context.SaveChangesAsync();
-                if(result >0)
+                if(result > 0)
                 {
                     return result;
                 }
@@ -71,7 +73,6 @@ namespace RepositoryManager.Service
                 {
                     throw new Exception();
                 }
-                
             }
             catch (Exception ex)
             {
@@ -82,8 +83,8 @@ namespace RepositoryManager.Service
         /// <summary>
         /// Gets all notes.
         /// </summary>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
         public IList<NotesModel> GetAllNotes()
         {
             try
@@ -96,27 +97,27 @@ namespace RepositoryManager.Service
                 {
                     list.Add(data);
                 }
+
                 return list;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
         }
-
+        
         /// <summary>
-        /// Gets the notes by identifier.
+        /// Get the notes by user id and note type.
         /// </summary>
-        /// <param name="UserId">The user identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <param name="userId">user id.</param>
+        /// <param name="noteType">note type.</param>
+        /// <returns>return the notes.</returns>
         public IList<NotesModel> GetNotesById(string userId, NoteTypeEnum noteType)
         {
             try
             {
                 var noteList = new List<NotesModel>();
-                
-                var note = (from notedata in context.Notes where notedata.UserId == userId select notedata);
+                var note = from notedata in this.context.Notes where notedata.UserId == userId select notedata;
                 foreach (var data in note)
                 {
                     if (data.noteType == noteType)
@@ -124,7 +125,32 @@ namespace RepositoryManager.Service
                         noteList.Add(data);
                     }
                 }
+
                 return noteList; 
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        ///  get the notes by user id
+        /// </summary>
+        /// <param name="userId">user id.</param>
+        /// <returns>return notes data.</returns>
+        public IList<NotesModel> GetNotesByUserId(string userId)
+        {
+            try
+            {
+                var noteList = new List<NotesModel>();
+                var note = from notedata in this.context.Notes where notedata.UserId == userId select notedata;
+                foreach (var data in note)
+                {
+                    noteList.Add(data);
+                }
+
+                return noteList;
             }
             catch (Exception ex)
             {
@@ -137,8 +163,8 @@ namespace RepositoryManager.Service
         /// </summary>
         /// <param name="notesModel">The notes model.</param>
         /// <param name="UserId"></param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
         public async Task<int> UpdateNotes(NotesModel notesModel, int id)
         {
             try
@@ -158,10 +184,11 @@ namespace RepositoryManager.Service
                     update.noteType = notesModel.noteType;
                     update.IsPin = notesModel.IsPin;
                 }
-                var Result =await this.SaveAll();
+
+                var Result = await this.SaveAll();
                 return Result;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 throw new Exception(ex.Message);
             }
@@ -170,7 +197,7 @@ namespace RepositoryManager.Service
         /// <summary>
         /// Saves all.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         public async Task<int> SaveAll()
         {
             return await this.context.SaveChangesAsync();
@@ -180,17 +207,17 @@ namespace RepositoryManager.Service
         /// Deletes the notes.
         /// </summary>
         /// <param name="UserId">The user identifier.</param>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
         public async Task<int> DeleteNotes(int id)
         {
             try
             {
+                ////NotesModel removeDta = this.context.Notes.Where(note => note.UserId == UserId).FirstOrDefault();
                 var removeData = (from notes in this.context.Notes
                                  where notes.Id == id
                                  select notes).FirstOrDefault();
-                //NotesModel removeDta = this.context.Notes.Where(note => note.UserId == UserId).FirstOrDefault();
-
+                
                 this.context.Notes.Remove(removeData);
                 var Result = await this.SaveAll();
                 return Result;
@@ -206,29 +233,30 @@ namespace RepositoryManager.Service
         /// </summary>
         /// <param name="file">The file.</param>
         /// <param name="noteId">The note identifier.</param>
-        /// <returns></returns>
+        /// <returns>return result.</returns>
         /// <exception cref="Exception">
+        /// throw exception.
         /// </exception>
         public async Task<string> ImageUpload(IFormFile file, int noteId)
         {
             try
             {
-                //create object of the cloudinaryImage class
+                ////create object of the cloudinaryImage class
                 CloudinaryImage cloudinary = new CloudinaryImage();
                 
-                //Cloudinary UploadImageCloudinary method call
+                ////Cloudinary UploadImageCloudinary method call
                 var uploadUrl = cloudinary.UploadImageCloudinary(file);
 
-                //Query to get the note data from database 
+                ////Query to get the note data from database 
                 var data = this.context.Notes.Where(note => note.Id == noteId).FirstOrDefault();
 
-                //update the ImageUrl to database Notes table
+                ////update the ImageUrl to database Notes table
                 data.Image = uploadUrl;
 
-                //Update save changes in dabase table
+                ////Update save changes in dabase table
                 int result = await this.context.SaveChangesAsync();
 
-                //if result is grater than zero then return the update result 
+                ////if result is grater than zero then return the update result 
                 if (result > 0)
                 { 
                     return data.Image;
@@ -254,15 +282,6 @@ namespace RepositoryManager.Service
         {
             try
             {
-                //var data = from t in this.context.Collaborator where t.UserId == collaboratorModel.UserId select t;
-                //foreach (var item in data.ToList())
-                //{
-                //    if (item.NoteId.Equals(collaboratorModel.NoteId) && item.CreatedBy.Equals(collaboratorModel.CreatedBy))
-                //    {
-                //        return 0;
-                //    }
-                //}
-
                 var collaborator = new CollaboratorModel()
                 {
                     UserId = collaboratorModel.UserId,
@@ -288,7 +307,7 @@ namespace RepositoryManager.Service
         }
 
         /// <summary>
-        /// 
+        /// Get collaborator by notes id.
         /// </summary>
         /// <param name="email">email</param>
         /// <returns>return the list of the collaborator.</returns>
@@ -297,23 +316,16 @@ namespace RepositoryManager.Service
             try
             {
                 if (!noteId.Equals(null))
-                {
-                    IList<CollaboratorModel> collaborator = new List<CollaboratorModel>();
-                    IList<NotesModel> notes = new List<NotesModel>();
-
-                    //var dbQuery = from note in this.context.Notes
-                    //             join collaborators in this.context.Collaborator
-                    //             on note.Id equals collaborators.NoteId
-                    //             join user in this.context.ApplicationUser on collaborators.UserId equals user.Id
-                    //             select new {user.Email, collaborators.NoteId} ;
-
-
+                {   
                     var dbQuery = from note in this.context.Notes
                                   join collaborators in this.context.Collaborator
                                   on note.Id equals collaborators.NoteId
-                                  select new { note.Id, collaborators.CreatedBy };
-
-                    var finalQuery = dbQuery.AsEnumerable().Select(x => string.Format("Email:{0}; NoteId:{1}", x.CreatedBy, x.Id));
+                                  where note.Id == noteId
+                                  select new { note.Id, collaborators.UserId };
+                    
+                    var finalQuery = dbQuery.AsEnumerable().Select(x => string.Format("UserId:{0}; NoteId:{1}", x.UserId, x.Id));
+                    var id = "832a84fc-0be2-455c-bf28-b2d20fc53ef9";
+                    Task<IList<ApplicationUserModel>> VerirfyUser1 = VerirfyUser(id);
                     string[] result = finalQuery.ToArray();
                     if (!finalQuery.Equals(null))
                     {
@@ -345,12 +357,16 @@ namespace RepositoryManager.Service
             try
             {
                 //// get the collaborator data 
-                var data = this.context.Collaborator.Where<CollaboratorModel>(t => t.Id == id).FirstOrDefault();
+                ///var data = this.context.Collaborator.Where(t => t.Id == id).FirstOrDefault();
+                var data = (from collaborator in this.context.Collaborator
+                            where (collaborator.Id == id)
+                            select collaborator).FirstOrDefault();
+
                 ////remove the collaborator
                 this.context.Collaborator.Remove(data);
                 ////return the result after update the database
                 var result = await this.context.SaveChangesAsync();
-                if (result.Equals(null))
+                if (!result.Equals(null))
                 {
                     return result;
                 }
@@ -362,6 +378,54 @@ namespace RepositoryManager.Service
             catch (Exception exception)
             {
                 throw new Exception(exception.Message);
+            }
+        }
+
+        /// <summary>
+        /// Update the collaborator.
+        /// </summary>
+        /// <param name="noteId">note id</param>
+        /// <param name="id">collaborator id.</param>
+        /// <param name="notesModel">notes model data.</param>
+        /// <returns></returns>
+        public async Task<int> UpdateCollaborator(int noteId, int id, NotesModel notesModel)
+        {
+            try
+            {
+                ////fire the qeury to check the note id in collaborator table and Notes Table
+                var query = from note in this.context.Notes
+                            join collaborator in this.context.Collaborator
+                            on note.Id equals collaborator.NoteId
+                            select new { note.Id, collaborator.NoteId};
+
+                ////update the data field
+                var notes = new NotesModel()
+                {
+                    UserId = notesModel.UserId,
+                    Title = notesModel.Title,
+                    Description = notesModel.Description,
+                    Color = notesModel.Color,
+                    noteType = notesModel.noteType,
+                    IsPin = notesModel.IsPin,
+                    Reminder = notesModel.Reminder
+                };
+
+                ////update the notes data in Notes table
+                this.context.Notes.Add(notes);
+                var result = await this.context.SaveChangesAsync();
+                if (result > 0)
+                {
+                    ////return the success result.
+                    return result;
+                }
+                else
+                {
+                    throw new Exception("The notes are not updated in database");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
 
@@ -384,6 +448,7 @@ namespace RepositoryManager.Service
 
                         this.context.Notes.Remove(notes);
                     }
+
                     var result = await this.context.SaveChangesAsync();
                     if (result > 0)
                     {
@@ -414,7 +479,7 @@ namespace RepositoryManager.Service
         {
             try
             {
-                if (!String.IsNullOrEmpty(searchString))
+                if (!string.IsNullOrEmpty(searchString))
                 {
                     var list = new List<NotesModel>();
                     var query = this.context.Notes.Where(s => s.Title.Contains(searchString)
@@ -485,6 +550,7 @@ namespace RepositoryManager.Service
                 {
                     list.Add(Data);
                 }
+
                 return list;
             }
             catch (Exception ex)
@@ -533,8 +599,48 @@ namespace RepositoryManager.Service
                         list.Add(data);
                     }
                 }
-                return list;
 
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// The verify the user and get details.
+        /// </summary>
+        /// <param name="id">user id.</param>
+        /// <returns>return user details.</returns>
+        public async Task<IList<ApplicationUserModel>> VerirfyUser(string id)
+        {
+            try
+            {
+                IList<ApplicationUserModel> product = null;
+                using (var client = new HttpClient())
+                {
+                    //// gets the token which is passed
+                   // var accessToken = Request.Headers["Authorization"].ToString();
+                    //string[] strArr = null;
+                    //char[] splitchar = { ' ' };
+
+                    //// splits the token to get the token without bearer keyword
+                    //strArr = accessToken.Split(splitchar);
+
+                    //// adding token in httpclient instance
+                    //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", strArr[1]);
+
+                    //// calling api from other services
+                    var response = await client.GetAsync("https://localhost:44330/api/AccountUser/GetUser?userId="+id);
+                    response.EnsureSuccessStatusCode();
+                    var responseAsString = await response.Content.ReadAsStringAsync();
+                    var responseAsConcreteType = JsonConvert.DeserializeObject<ApplicationUserModel>(responseAsString);
+                    //return responseAsConcreteType;
+                    //product = await response.Content.ReadAsAsync<IList<ApplicationUserModel>>();
+                }
+
+                return product;
             }
             catch (Exception ex)
             {

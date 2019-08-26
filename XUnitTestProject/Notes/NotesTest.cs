@@ -1,5 +1,5 @@
 ﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="INotesRepositoryManager.cs" company="Bridgelabz">
+// <copyright file="NotesTest.cs" company="Bridgelabz">
 //   Copyright © 2019 Company="BridgeLabz"
 // </copyright>
 // <creator name="Mahesh Aurad"/>
@@ -23,23 +23,23 @@ namespace XUnitTestProject.Notes
         [Fact]
         public void TestAddNotes()
         {
-            var NotesData = new Mock<INotesRepositoryManager>();
-            var addData = new BusinessManagerService(NotesData.Object);
+            var notesData = new Mock<INotesRepositoryManager>();
+            var addData = new BusinessManagerService(notesData.Object);
 
             var data = new NotesModel()
             {
-                UserId = " ",
-                Title = " ",
-                Description = "",
-                Color = " ",
-                Image = ""
+                UserId = string.Empty,
+                Title = string.Empty,
+                Description = string.Empty,
+                Color = string.Empty,
+                Image = string.Empty
             };
 
             ////Act 
-            var Data = addData.AddNotes(data);
+            var datas = addData.AddNotes(data);
 
             ////Assert
-            Assert.NotNull(Data);
+            Assert.NotNull(datas);
         }
 
         /// <summary>
@@ -48,27 +48,25 @@ namespace XUnitTestProject.Notes
         [Fact]
         public void UpdateNote()
         {
-            var NotesData = new Mock<INotesRepositoryManager>();
-            var addData = new BusinessManagerService(NotesData.Object);
+            var notesData = new Mock<INotesRepositoryManager>();
+            var addData = new BusinessManagerService(notesData.Object);
 
             var data = new NotesModel()
             {
-                UserId = " ",
-                Title = " ",
-                Description = "",
-                Color = " ",
-                Image = ""
+                UserId = string.Empty,
+                Title = string.Empty,
+                Description = string.Empty,
+                Color = string.Empty,
+                Image = string.Empty
             };
 
-            var Id = 1;
+            var id = 1;
             
             ////Act
-            var Data = addData.UpdateNotes(data, Id);
+            var Data = addData.UpdateNotes(data, id);
 
             ////Assert
             Assert.NotNull(Data);
         }
-
-
     }
 }

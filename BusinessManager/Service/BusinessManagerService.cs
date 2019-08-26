@@ -126,6 +126,39 @@ namespace BusinessManager.Service
         }
 
         /// <summary>
+        /// get notes by user id.
+        /// </summary>
+        /// <param name="userId">user id.</param>
+        /// <returns>return the notes data.</returns>
+        public IList<NotesModel> GetNotesByUserId(string userId)
+        {
+            try
+            {
+                if (!userId.Equals(null))
+                {
+                    ////repository manager layer method call
+                    var result = this.repositoryManager.GetNotesByUserId(userId);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception("the notes data not fetched");
+                    }
+                }
+                else
+                {
+                    throw new Exception("the user id is invalid.");
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
         /// Updates the notes.
         /// </summary>
         /// <param name="notesModel">notes model data.</param>
@@ -226,6 +259,7 @@ namespace BusinessManager.Service
                 {
                     ////repository service method called
                     var result = await this.repositoryManager.AddCollaborator(collaboratorModel);
+                    ////result is not null then return the result.
                     if (!result.Equals(null))
                     {
                         return result;
@@ -271,6 +305,41 @@ namespace BusinessManager.Service
                 else
                 {
                     throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// update the collaborator data.
+        /// </summary>
+        /// <param name="noteId">note id</param>
+        /// <param name="id">collaborator id.</param>
+        /// <param name="notesModel">notes model data.</param>
+        /// <returns>return the result.</returns>
+        public async Task<int> UpdateCollaborator(int noteId, int id, NotesModel notesModel)
+        {
+            try
+            {
+                if (!notesModel.Equals(null) && !id.Equals(null) && !noteId.Equals(null))
+                {
+                    ////repositoryManager Layer method.
+                    var result = await this.repositoryManager.UpdateCollaborator(noteId, id, notesModel);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception("collaborator is not successfully updated");
+                    }
+                }
+                else
+                {
+                    throw new Exception("note id or collaborator id or notes model data are null");
                 }
             }
             catch (Exception ex)

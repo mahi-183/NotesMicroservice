@@ -12,13 +12,19 @@ namespace XUnitTestProject.Label
     using RepositoryManager.Interface;
     using Xunit;
 
+    /// <summary>
+    /// the Label test class.
+    /// </summary>
     public class LabelTest
     {
+        /// <summary>
+        /// the test AddLabel method
+        /// </summary>
         [Fact]
         public void Test()
         {
-            var Label = new Mock<ILabelRepositoryManager>();
-            var LabelData = new LabelBusinessService(Label.Object);
+            var label = new Mock<ILabelRepositoryManager>();
+            var labelData = new LabelBusinessService(label.Object);
 
             var data = new LabelModel()
             {
@@ -27,10 +33,10 @@ namespace XUnitTestProject.Label
                 Lebel = "Lebel"
             };
 
-            //Act
-            var Data = LabelData.AddLabel(data);
+            ////Act
+            var Data = labelData.AddLabel(data);
 
-            //Asert
+            ////Asert
             Assert.NotNull(Data);
         }
     }
