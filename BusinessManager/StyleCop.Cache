@@ -56,7 +56,7 @@
     <timestamps>
       <styleCop>2019/04/09 10:02:57.906</styleCop>
       <settingsFile>2019/04/09 10:02:57.888</settingsFile>
-      <sourceFile>2019/08/26 13:45:44.449</sourceFile>
+      <sourceFile>2019/08/27 17:32:46.601</sourceFile>
       <parser>2019/04/09 10:02:57.906</parser>
       <StyleCop.CSharp.DocumentationRules>2019/04/09 10:02:57.906</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1786954509</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -79,7 +79,7 @@
     <timestamps>
       <styleCop>2019/04/09 10:02:57.906</styleCop>
       <settingsFile>2019/04/09 10:02:57.888</settingsFile>
-      <sourceFile>2019/08/26 13:47:31.337</sourceFile>
+      <sourceFile>2019/08/26 15:01:02.470</sourceFile>
       <parser>2019/04/09 10:02:57.906</parser>
       <StyleCop.CSharp.DocumentationRules>2019/04/09 10:02:57.906</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1786954509</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -109,12 +109,12 @@
       </violation>
       <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
         <context>Variable names and private field names must start with a lower-case letter: Result.</context>
-        <line>435</line>
+        <line>468</line>
         <warning>False</warning>
       </violation>
       <violation namespace="StyleCop.CSharp.NamingRules" rule="FieldNamesMustBeginWithLowerCaseLetter" ruleCheckId="SA1306">
         <context>Variable names and private field names must start with a lower-case letter: NoteType.</context>
-        <line>483</line>
+        <line>516</line>
         <warning>False</warning>
       </violation>
     </violations>

@@ -11,6 +11,9 @@ namespace XUnitTestProject
 
     public class UnitTest1
     {
+        /// <summary>
+        /// test the unit test cases.
+        /// </summary>
         [Fact]
         public void Test1()
         {

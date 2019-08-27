@@ -103,8 +103,8 @@ namespace NotesMicroservice
         /// <summary>
         /// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         /// </summary>
-        /// <param name="app">app param.</param>
-        /// <param name="env">env param.</param>
+        /// <param name="app">app parameter.</param>
+        /// <param name="env">env parameter.</param>
         public void Configure(IApplicationBuilder app, IHostingEnvironment env)
         {
             if (env.IsDevelopment())

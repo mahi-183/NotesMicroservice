@@ -35,10 +35,10 @@ namespace NotesMicroservice.Controllers
         }     
         
         /// <summary>
-        /// 
+        /// Add notes.
         /// </summary>
-        /// <param name="notesModel"></param>
-        /// <returns></returns>
+        /// <param name="notesModel">notes model.</param>
+        /// <returns>return the result.</returns>
         [HttpPost]
         [Route("Add")]
         public async Task<IActionResult> AddNotes(NotesModel notesModel)
@@ -66,9 +66,9 @@ namespace NotesMicroservice.Controllers
         }
         
         /// <summary>
-        /// 
+        /// Get all notes.
         /// </summary>
-        /// <returns></returns>
+        /// <returns>return the list of all notes</returns>
         [HttpGet]
         [Route("notes")]
         public IList<NotesModel> GetAllNotes()
@@ -86,10 +86,10 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// 
+        /// Get the notes by user id and note type.
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="noteType"></param>
+        /// <param name="userId">user id.</param>
+        /// <param name="noteType">note id</param>
         /// <returns></returns>
         [HttpGet]
         [Route("GetNotes")]
@@ -97,9 +97,28 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
-                ////BusinessLayer method call
-                var result = this.businessManager.GetNotesById(userId, noteType);
-                return result;
+                ////check the user id and note type is not null
+                if(!userId.Equals(null) && !noteType.Equals(null))
+                {
+                    ////BusinessLayer method call
+                    var result = this.businessManager.GetNotesById(userId, noteType);
+                    ////check 
+                    if (!result.Equals(null))
+                    {
+                        ////return the all notes.
+                        return result;
+                    }
+                    else
+                    {
+                        ////throw the exception
+                        throw new Exception("The data was not fetched successfuly");
+                    }
+                }
+                else
+                {
+                    ////throw the exception
+                    throw new Exception("user id or note type are invalid");
+                }
             }
             catch (Exception ex)
             {
@@ -108,7 +127,7 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// Get the notes by userId.
+        /// Get the notes by user id from the user microservice.
         /// </summary>
         /// <param name="userId">user id.</param>
         /// <returns>return the result.</returns>
@@ -143,41 +162,76 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// update the notes
+        /// update the notes.
         /// </summary>
         /// <param name="notesModel">notes model.</param>
         /// <param name="id">notes id.</param>
         /// <returns>return the result.</returns>
         [HttpPost]
         [Route("UpdateNotes")]
-        public async Task<int> UpdateNotes(NotesModel notesModel, int id)
+        public async Task<IActionResult> UpdateNotes(NotesModel notesModel, int id)
         {
             try
             {
-                ////BusinessLayer method call
-                var result = await this.businessManager.UpdateNotes(notesModel, id);
-                return result;
+                if (!notesModel.Equals(null) && !id.Equals(null))
+                {
+                    ////BusinessLayer method call
+                    var result = await this.businessManager.UpdateNotes(notesModel, id);
+                    ////check the result is not null
+                    if (!result.Equals(null))
+                    {
+                        ////return the success result.
+                        return this.Ok(new { result });
+                    }
+                    else
+                    {
+                        ////throw the exception message
+                        return this.BadRequest(new { Message = "The notes are not successfuly updated" });
+                    }
+                }
+                else
+                {
+                    ////throw the exception message
+                    return this.BadRequest(new { Message = "The note model or note id is invalid" });
+                }
             }
             catch (Exception ex)
             {
+                ////throw the exception message
                 throw new Exception(ex.Message);
             }
         }
         
         /// <summary>
-        /// 
+        /// Delete the notes by note id.
         /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
+        /// <param name="id">note id</param>
+        /// <returns>return the result.</returns>
         [HttpPost]
         [Route("DeleteNotes")]
-        public async Task<int> DeleteNotes(int id)
+        public async Task<IActionResult> DeleteNotes(int id)
         {
             try
             {
-                ////BusinessLayer method call
-                var result = await this.businessManager.DeleteNotes(id);
-                return result;
+                if (id.Equals(null))
+                {
+                    ////BusinessLayer method call
+                    var result = await this.businessManager.DeleteNotes(id);
+                    if (result.Equals(null))
+                    {
+                        return this.Ok(new { result });
+                    }
+                    else
+                    {
+                        ////return the bad result.
+                        return this.BadRequest(new { Message = "The notes are not deleted the succussfuly" });
+                    }
+                }
+                else
+                {
+                    ////return the 
+                    return this.BadRequest(new { Message = "The note id is invalid" });
+                }
             }
             catch (Exception ex)
             {
@@ -346,6 +400,7 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
+                ////check the is not null
                 if (!id.Equals(null))
                 {
                     ////BusinessManager layer method call
@@ -490,7 +545,7 @@ namespace NotesMicroservice.Controllers
         /// <summary>
         /// Search the notes title and description by the string
         /// </summary>
-        /// <param name="searchString">serach string.</param>
+        /// <param name="searchString">search string.</param>
         /// <returns>return the notes list.</returns>
         [HttpPost]
         [Route("Search")]

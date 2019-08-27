@@ -34,7 +34,7 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// the add Label controller api
+        /// the add Label controller
         /// </summary>
         /// <param name="labelModel">label model data.</param>
         /// <returns>return result.</returns>
@@ -62,7 +62,7 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// the get label api.
+        /// the get label.
         /// </summary>
         /// <returns>return the all label data.</returns>
         [HttpGet]
@@ -131,7 +131,7 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// the delete label api.
+        /// the delete label.
         /// </summary>
         /// <param name="LabelId">label id.</param>
         /// <returns>return result.</returns>

@@ -106,5 +106,13 @@ namespace CommanLayer.Model
         /// The type of the note.
         /// </value>
         public NoteTypeEnum noteType { get; set; }
+
+        /// <summary>
+        /// collaborator user data.
+        /// </summary>
+        /// <value>
+        /// The type of the note.
+        /// </value>
+        //public string[] Collaborator { get; set; }
     }
 }

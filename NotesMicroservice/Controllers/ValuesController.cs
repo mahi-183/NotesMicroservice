@@ -60,7 +60,7 @@ namespace NotesMicroservice.Controllers
         }
 
         /// <summary>
-        /// get api.
+        /// get the notes details by user id.
         /// </summary>
         /// <param name="id">id.</param>
         /// <returns>return result.</returns>

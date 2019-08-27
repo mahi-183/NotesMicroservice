@@ -31,7 +31,7 @@ namespace RepositoryManager.Interface
         /// <summary>
         /// Gets the label by identifier.
         /// </summary>
-        /// <param name="userId">The uer identifier.</param>
+        /// <param name="userId">The user identifier.</param>
         /// <returns></returns>
         IList<LabelModel> GetLabelById(string userId);
 
@@ -46,7 +46,7 @@ namespace RepositoryManager.Interface
         /// <summary>
         /// Deletes the label.
         /// </summary>
-        /// <param name="labeld">The labeld.</param>
+        /// <param name="labeld">The labe Id.</param>
         /// <returns></returns>
         Task<int> DeleteLabel(int labeld);
     }

@@ -16,7 +16,7 @@ namespace RepositoryManager.DBContext
     public class AuthenticationContext : DbContext
     {
         /// <summary>
-        /// pass the instance of the database context options class to the base DbContext class<see cref="AuthenticationContext"/> class.
+        /// pass the instance of the database context options class to the base database context class<see cref="AuthenticationContext"/> class.
         /// </summary>
         /// <param name="options">The options for this context.</param>
         public AuthenticationContext(DbContextOptions options) : base(options) 

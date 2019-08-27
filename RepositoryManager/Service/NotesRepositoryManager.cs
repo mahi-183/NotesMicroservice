@@ -10,6 +10,7 @@ namespace RepositoryManager.Service
     using CommanLayer.Enumerable;
     using CommanLayer.Model;
     using Microsoft.AspNetCore.Http;
+    using Microsoft.AspNetCore.Identity;
     using Newtonsoft.Json;
     using RepositoryManager.DBContext;
     using RepositoryManager.Interface;
@@ -32,13 +33,19 @@ namespace RepositoryManager.Service
         private readonly AuthenticationContext context;
 
         /// <summary>
+        /// the user Manager identity
+        /// </summary>
+        private readonly UserManager<ApplicationUserModel> userManager;
+
+        /// <summary>
         /// Initializes a new instance of the <see cref="NotesRepositoryManager"/> class.
         /// </summary>
         /// <param name="userManager">The user manager.</param>
         /// <param name="context">The context.</param>
-        public NotesRepositoryManager(AuthenticationContext context)
+        public NotesRepositoryManager(AuthenticationContext context, UserManager<ApplicationUserModel> userManager)
         {
             this.context = context;
+            this.userManager = userManager;
         }
 
         /// <summary>
@@ -324,8 +331,12 @@ namespace RepositoryManager.Service
                                   select new { note.Id, collaborators.UserId };
                     
                     var finalQuery = dbQuery.AsEnumerable().Select(x => string.Format("UserId:{0}; NoteId:{1}", x.UserId, x.Id));
-                    var id = "832a84fc-0be2-455c-bf28-b2d20fc53ef9";
-                    Task<IList<ApplicationUserModel>> VerirfyUser1 = VerirfyUser(id);
+                    foreach (var data in dbQuery)
+                    {
+                        var userId = data.UserId;
+                        Task<IList<ApplicationUserModel>> VerirfyUser1 = VerirfyUser(userId);
+                        //string email = VerirfyUser1.EmailId;
+                    }
                     string[] result = finalQuery.ToArray();
                     if (!finalQuery.Equals(null))
                     {
@@ -393,25 +404,27 @@ namespace RepositoryManager.Service
             try
             {
                 ////fire the qeury to check the note id in collaborator table and Notes Table
+                var quer1 = from collab in this.context.Collaborator
+                            where collab.Id == id
+                            select collab;
                 var query = from note in this.context.Notes
                             join collaborator in this.context.Collaborator
                             on note.Id equals collaborator.NoteId
-                            select new { note.Id, collaborator.NoteId};
+                            select note;
 
-                ////update the data field
-                var notes = new NotesModel()
+                foreach (var data in query)
                 {
-                    UserId = notesModel.UserId,
-                    Title = notesModel.Title,
-                    Description = notesModel.Description,
-                    Color = notesModel.Color,
-                    noteType = notesModel.noteType,
-                    IsPin = notesModel.IsPin,
-                    Reminder = notesModel.Reminder
-                };
+                    data.Title = notesModel.Title;
+                    data.Description = notesModel.Description;
+                    data.Image = notesModel.Image;
+                    data.ModifiedDate = notesModel.ModifiedDate;
+                    data.Color = notesModel.Color;
+                    data.Reminder = notesModel.Reminder;
+                    data.IsPin = notesModel.IsPin;
+                    data.noteType = notesModel.noteType;
+                }
 
                 ////update the notes data in Notes table
-                this.context.Notes.Add(notes);
                 var result = await this.context.SaveChangesAsync();
                 if (result > 0)
                 {
@@ -471,7 +484,7 @@ namespace RepositoryManager.Service
         }
 
         /// <summary>
-        /// 
+        /// Search the notes by string
         /// </summary>
         /// <param name="searchString"></param>
         /// <returns></returns>
@@ -620,24 +633,13 @@ namespace RepositoryManager.Service
                 IList<ApplicationUserModel> product = null;
                 using (var client = new HttpClient())
                 {
-                    //// gets the token which is passed
-                   // var accessToken = Request.Headers["Authorization"].ToString();
-                    //string[] strArr = null;
-                    //char[] splitchar = { ' ' };
-
-                    //// splits the token to get the token without bearer keyword
-                    //strArr = accessToken.Split(splitchar);
-
-                    //// adding token in httpclient instance
-                    //client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", strArr[1]);
-
                     //// calling api from other services
-                    var response = await client.GetAsync("https://localhost:44330/api/AccountUser/GetUser?userId="+id);
+                    var response = await client.GetAsync("https://localhost:44330/api/AccountUser/GetUser?userId=" + id);
                     response.EnsureSuccessStatusCode();
                     var responseAsString = await response.Content.ReadAsStringAsync();
                     var responseAsConcreteType = JsonConvert.DeserializeObject<ApplicationUserModel>(responseAsString);
-                    //return responseAsConcreteType;
-                    //product = await response.Content.ReadAsAsync<IList<ApplicationUserModel>>();
+                    ////return responseAsConcreteType;
+                    ////product = await response.Content.ReadAsAsync<IList<ApplicationUserModel>>();
                 }
 
                 return product;

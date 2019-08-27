@@ -62,7 +62,7 @@
     <timestamps>
       <styleCop>2019/04/09 10:02:57.906</styleCop>
       <settingsFile>2019/04/09 10:02:57.888</settingsFile>
-      <sourceFile>2019/08/26 14:38:29.441</sourceFile>
+      <sourceFile>2019/08/27 19:23:22.889</sourceFile>
       <parser>2019/04/09 10:02:57.906</parser>
       <StyleCop.CSharp.DocumentationRules>2019/04/09 10:02:57.906</StyleCop.CSharp.DocumentationRules>
       <StyleCop.CSharp.DocumentationRules.FilesHashCode>1786954509</StyleCop.CSharp.DocumentationRules.FilesHashCode>
@@ -83,11 +83,6 @@
       <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
         <context>The class must have a documentation header.</context>
         <line>12</line>
-        <warning>False</warning>
-      </violation>
-      <violation namespace="StyleCop.CSharp.DocumentationRules" rule="ElementsMustBeDocumented" ruleCheckId="SA1600">
-        <context>The method must have a documentation header.</context>
-        <line>15</line>
         <warning>False</warning>
       </violation>
     </violations>

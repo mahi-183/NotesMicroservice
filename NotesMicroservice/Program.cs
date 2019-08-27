@@ -10,7 +10,7 @@ namespace NotesMicroservice
     using Microsoft.AspNetCore.Hosting;
 
     /// <summary>
-    /// the programe class.
+    /// the program class.
     /// </summary>
     public class Program
     {

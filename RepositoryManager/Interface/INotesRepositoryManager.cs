@@ -68,7 +68,7 @@ namespace RepositoryManager.Interface
         /// Adds the collaborator.
         /// </summary>
         /// <param name="collaboratorModel">The collaborator model.</param>
-        /// <returns>retrun the int value.</returns>
+        /// <returns>return the value.</returns>
         Task<int> AddCollaborator(CollaboratorModel collaboratorModel);
 
         /// <summary>
