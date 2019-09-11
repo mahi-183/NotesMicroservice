@@ -14,12 +14,14 @@ namespace NotesMicroservice.Controllers
     using CommanLayer.Enumerable;
     using CommanLayer.Model;
     using Microsoft.AspNetCore.Authorization;
+    using Microsoft.AspNetCore.Cors;
     using Microsoft.AspNetCore.Http;
     using Microsoft.AspNetCore.Mvc;
     
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
+    [EnableCors("AllowOrigin")]
     public class NotesController : ControllerBase
     {
         ////create reference of businessLayer method
@@ -40,7 +42,7 @@ namespace NotesMicroservice.Controllers
         /// <param name="notesModel">notes model.</param>
         /// <returns>return the result.</returns>
         [HttpPost]
-        [Route("Add")]
+        [Route("addNotes")]
         public async Task<IActionResult> AddNotes(NotesModel notesModel)
         {
             try

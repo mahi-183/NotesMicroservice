@@ -61,6 +61,19 @@ namespace NotesMicroservice
             services.AddDbContext<AuthenticationContext>(options =>
                options.UseSqlServer(this.Configuration.GetConnectionString("IdentityConnection")));
             
+            ////Allow origin backend to run on different port
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.WithOrigins("http://localhost:4200"));
+            });
+
+            services.AddCors(cors => cors.AddPolicy("AllowOrigin", builder =>
+            {
+                builder.AllowAnyHeader()
+                 .AllowAnyMethod()
+                 .AllowAnyOrigin();
+            }));
+
             ////Add swagger 
             services.AddSwaggerGen(c =>
             {
@@ -125,6 +138,13 @@ namespace NotesMicroservice
                 options.SwaggerEndpoint("/swagger/v1/swagger.json", "MyFandooApp");
             });
 
+            app.UseCors("AllowOrigin");
+            app.UseCors(options =>
+            options.WithOrigins("http://localhost:4200")
+           .AllowAnyHeader()
+           .AllowAnyMethod()
+           .AllowAnyOrigin()
+           .AllowCredentials());
             app.UseAuthentication();
             app.UseHttpsRedirection();
             app.UseMvc();
