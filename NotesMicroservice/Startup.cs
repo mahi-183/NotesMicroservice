@@ -56,12 +56,12 @@ namespace NotesMicroservice
 
             services.AddTransient<ILabelRepositoryManager, LabelRepositoryService>();
             services.AddTransient<ILabelBusinessManager, LabelBusinessService>();
-
+            
             ////Get Connection to database
             services.AddDbContext<AuthenticationContext>(options =>
                options.UseSqlServer(this.Configuration.GetConnectionString("IdentityConnection")));
-            
-            ////Allow origin backend to run on different port
+
+            //Allow origin backend to run on different port
             services.AddCors(c =>
             {
                 c.AddPolicy("AllowOrigin", options => options.WithOrigins("http://localhost:4200"));

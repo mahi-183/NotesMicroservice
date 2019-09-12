@@ -21,11 +21,10 @@ namespace NotesMicroservice.Controllers
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
-    [EnableCors("AllowOrigin")]
     public class NotesController : ControllerBase
     {
         ////create reference of businessLayer method
-        public IBusinessManager businessManager;
+        public IBusinessManager _businessManager;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="NotesController"/> class.
@@ -33,7 +32,7 @@ namespace NotesMicroservice.Controllers
         /// <param name="businessManager">The business manager.</param>
         public NotesController(IBusinessManager businessManager)
         {
-            this.businessManager = businessManager;
+            _businessManager = businessManager;
         }     
         
         /// <summary>
@@ -48,7 +47,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////BusinessLayer method call
-                var result = await this.businessManager.AddNotes(notesModel);
+                var result = await _businessManager.AddNotes(notesModel);
                 
                 ////if result is null then it throw the error message 
                 if (!result.Equals(null))
@@ -78,7 +77,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////BusinessLayer method call
-                var result = this.businessManager.GetAllNotes();
+                var result = _businessManager.GetAllNotes();
                 return result;
             }
             catch (Exception ex)
@@ -103,7 +102,7 @@ namespace NotesMicroservice.Controllers
                 if(!userId.Equals(null) && !noteType.Equals(null))
                 {
                     ////BusinessLayer method call
-                    var result = this.businessManager.GetNotesById(userId, noteType);
+                    var result = this._businessManager.GetNotesById(userId, noteType);
                     ////check 
                     if (!result.Equals(null))
                     {
@@ -134,7 +133,7 @@ namespace NotesMicroservice.Controllers
         /// <param name="userId">user id.</param>
         /// <returns>return the result.</returns>
         [HttpGet]
-        [Route("GetNotesById")]
+        [Route("get/{userId}")]
         public IList<NotesModel> GetNotesByUserId(string userId)
         {
             try
@@ -142,7 +141,7 @@ namespace NotesMicroservice.Controllers
                 if (!userId.Equals(null))
                 {
                     ////BusinessLayer method call
-                    var result = this.businessManager.GetNotesByUserId(userId);
+                    var result = this._businessManager.GetNotesByUserId(userId);
                     if (!result.Equals(null))
                     {
                         return result;
@@ -178,7 +177,7 @@ namespace NotesMicroservice.Controllers
                 if (!notesModel.Equals(null) && !id.Equals(null))
                 {
                     ////BusinessLayer method call
-                    var result = await this.businessManager.UpdateNotes(notesModel, id);
+                    var result = await this._businessManager.UpdateNotes(notesModel, id);
                     ////check the result is not null
                     if (!result.Equals(null))
                     {
@@ -218,7 +217,7 @@ namespace NotesMicroservice.Controllers
                 if (id.Equals(null))
                 {
                     ////BusinessLayer method call
-                    var result = await this.businessManager.DeleteNotes(id);
+                    var result = await this._businessManager.DeleteNotes(id);
                     if (result.Equals(null))
                     {
                         return this.Ok(new { result });
@@ -254,7 +253,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////BusinessLayer method call
-                var ImageUrl = await this.businessManager.ImageUpload(formFile, id);
+                var ImageUrl = await this._businessManager.ImageUpload(formFile, id);
                 
                 ////if the imageurl is null then it 
                 if (!ImageUrl.Equals(null))
@@ -284,7 +283,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////BusinessLager method call
-                var result = this.businessManager.Reminder(noteId);
+                var result = this._businessManager.Reminder(noteId);
                 
                 ////if result null then return result NotFount message
                 if (!result.Equals(null))
@@ -314,7 +313,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////BusinessLayer method call
-                var result = this.businessManager.IsPin(noteId);
+                var result = this._businessManager.IsPin(noteId);
                 if (!result.Equals(null))
                 {
                     ////return result
@@ -343,7 +342,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////BusinessLayer method call
-                var result = this.businessManager.GetNoteType(NoteType);
+                var result = this._businessManager.GetNoteType(NoteType);
                 if (!result.Equals(null))
                 {
                     return this.Ok(new { result });
@@ -373,7 +372,7 @@ namespace NotesMicroservice.Controllers
                 if (ModelState.IsValid)
                 {
                     ////BusinessManager Layer method call
-                    var result = await this.businessManager.AddCollaborator(collaboratorModel);
+                    var result = await this._businessManager.AddCollaborator(collaboratorModel);
 
                     ///return the success result
                     return this.Ok(new { result });
@@ -406,7 +405,7 @@ namespace NotesMicroservice.Controllers
                 if (!id.Equals(null))
                 {
                     ////BusinessManager layer method call
-                    var result = this.businessManager.GetCollborators(id);
+                    var result = this._businessManager.GetCollborators(id);
                     if (!result.Equals(null))
                     {
                         ////return the result.
@@ -444,7 +443,7 @@ namespace NotesMicroservice.Controllers
                 if (!id.Equals(null))
                 {
                     ////BusinessManager layer method call
-                    var result = this.businessManager.UpdateCollaborator(noteId, id, notesModel);
+                    var result = this._businessManager.UpdateCollaborator(noteId, id, notesModel);
                     if (!result.Equals(null))
                     {
                         ////return the result.
@@ -481,7 +480,7 @@ namespace NotesMicroservice.Controllers
                 if (!id.Equals(null))
                 {
                     ////businessManager Layer method Called
-                    var result = await this.businessManager.RemoveCollaboratorToNote(id);
+                    var result = await this._businessManager.RemoveCollaboratorToNote(id);
 
                     ////if result is null then throw the exception message
                     if (!result.Equals(null))
@@ -522,7 +521,7 @@ namespace NotesMicroservice.Controllers
                 if (!id.Equals(null))
                 {
                     ////businessManager Layer method called
-                    var result = await this.businessManager.BulkDelete(id);
+                    var result = await this._businessManager.BulkDelete(id);
                     if (!result.Equals(null))
                     {
                         ////return result.
@@ -558,7 +557,7 @@ namespace NotesMicroservice.Controllers
                 if (!searchString.Equals(null))
                 {
                     ////businessManager Layer method call.
-                    var result = this.businessManager.Search(searchString);
+                    var result = this._businessManager.Search(searchString);
                     ////result is not null then return result.
                     if (!result.Equals(null))
                     {

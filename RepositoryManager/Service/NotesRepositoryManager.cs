@@ -31,21 +31,16 @@ namespace RepositoryManager.Service
         /// the authentication context reference created.
         /// </summary>
         private readonly AuthenticationContext context;
-
-        /// <summary>
-        /// the user Manager identity
-        /// </summary>
-        private readonly UserManager<ApplicationUserModel> userManager;
-
+        
         /// <summary>
         /// Initializes a new instance of the <see cref="NotesRepositoryManager"/> class.
         /// </summary>
         /// <param name="userManager">The user manager.</param>
         /// <param name="context">The context.</param>
-        public NotesRepositoryManager(AuthenticationContext context, UserManager<ApplicationUserModel> userManager)
+        public NotesRepositoryManager(AuthenticationContext context)
         {
             this.context = context;
-            this.userManager = userManager;
+            //this.userManager = userManager;
         }
 
         /// <summary>
