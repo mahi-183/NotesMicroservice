@@ -99,6 +99,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////check the user id and note type is not null
+                ///noteType is for isNote=0, isTrash = 1, isArchive=2
                 if(!userId.Equals(null) && !noteType.Equals(null))
                 {
                     ////BusinessLayer method call
@@ -214,11 +215,11 @@ namespace NotesMicroservice.Controllers
         {
             try
             {
-                if (id.Equals(null))
+                if (!id.Equals(null))
                 {
                     ////BusinessLayer method call
                     var result = await this._businessManager.DeleteNotes(id);
-                    if (result.Equals(null))
+                    if (!result.Equals(null))
                     {
                         return this.Ok(new { result });
                     }
@@ -274,16 +275,16 @@ namespace NotesMicroservice.Controllers
         /// <summary>
         /// reminder.
         /// </summary>
-        /// <param name="noteId">note id.</param>
+        /// <param name="noteId">user id.</param>
         /// <returns>return result.</returns>
         [HttpGet]
         [Route("Reminder")]
-        public IActionResult Reminder(int noteId)
+        public IActionResult Reminder(string userId)
         {
             try
             {
                 ////BusinessLager method call
-                var result = this._businessManager.Reminder(noteId);
+                var result = this._businessManager.Reminder(userId);
                 
                 ////if result null then return result NotFount message
                 if (!result.Equals(null))

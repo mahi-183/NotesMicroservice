@@ -458,14 +458,14 @@ namespace BusinessManager.Service
         /// <exception cref="Exception">
         /// throws exception
         /// </exception>
-        public IList<NotesModel> Reminder(int noteId)
+        public IList<NotesModel> Reminder(string userId)
         {
             try
             {
-                if (!noteId.Equals(null))
+                if (!userId.Equals(null))
                 {
                     ////repositoryManager Layer method call
-                    var Result = this.repositoryManager.Reminder(noteId);
+                    var Result = this.repositoryManager.Reminder(userId);
                     return Result;
                 }
                 else

@@ -117,7 +117,7 @@ namespace BusinessManager.Interface
         /// </summary>
         /// <param name="noteId">note id</param>
         /// <returns>return result.</returns>
-        IList<NotesModel> Reminder(int noteId);
+        IList<NotesModel> Reminder(string userId);
 
         /// <summary>
         /// Determines whether the specified user identifier is pin.

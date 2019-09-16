@@ -118,6 +118,7 @@ namespace RepositoryManager.Service
         {
             try
             {
+                ///note type value isNote=0
                 var noteList = new List<NotesModel>();
                 var note = from notedata in this.context.Notes where notedata.UserId == userId select notedata;
                 foreach (var data in note)
@@ -519,13 +520,13 @@ namespace RepositoryManager.Service
         /// <param name="noteId"></param>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        public IList<NotesModel> Reminder(int noteId)
+        public IList<NotesModel> Reminder(string userId)
         {
             try
             {
                 IList<NotesModel> list = new List<NotesModel>();
                 var data = from notes in this.context.Notes
-                           where (notes.Id == noteId) && (notes.Reminder != null)
+                           where (notes.UserId == userId) && (notes.Reminder != null)
                            select notes;
 
                 foreach (var reminderData in data)
