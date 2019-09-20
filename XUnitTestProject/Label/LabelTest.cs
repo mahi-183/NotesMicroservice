@@ -28,7 +28,6 @@ namespace XUnitTestProject.Label
 
             var data = new LabelModel()
             {
-                NoteId = 1,
                 UserId = "UserID",
                 Lebel = "Lebel"
             };

@@ -104,9 +104,10 @@ namespace RepositoryManager.Interface
         /// <summary>
         /// search the title description by string.
         /// </summary>
+        /// <param name="userId">userId.</param>
         /// <param name="searchString">search string.</param>
         /// <returns>return result.</returns>
-        IList<NotesModel> Search(string searchString);
+        IList<NotesModel> Search(string userId,string searchString);
 
         /// <summary>
         /// Reminders the specified user identifier.

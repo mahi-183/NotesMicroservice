@@ -547,18 +547,19 @@ namespace NotesMicroservice.Controllers
         /// <summary>
         /// Search the notes title and description by the string
         /// </summary>
+        /// <param name="userId">userId.</param>
         /// <param name="searchString">search string.</param>
         /// <returns>return the notes list.</returns>
-        [HttpPost]
+        [HttpGet]
         [Route("Search")]
-        public IActionResult Search(string searchString)
-        {
+        public IActionResult Search(string userId,string searchString)
+       {
             try
             {
                 if (!searchString.Equals(null))
                 {
                     ////businessManager Layer method call.
-                    var result = this._businessManager.Search(searchString);
+                    var result = this._businessManager.Search(userId,searchString);
                     ////result is not null then return result.
                     if (!result.Equals(null))
                     {

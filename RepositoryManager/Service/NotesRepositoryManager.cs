@@ -482,9 +482,10 @@ namespace RepositoryManager.Service
         /// <summary>
         /// Search the notes by string
         /// </summary>
+        /// <param name="userId"></param>
         /// <param name="searchString"></param>
         /// <returns></returns>
-        public IList<NotesModel> Search(string searchString)
+        public IList<NotesModel> Search(string userId,string searchString)
         {
             try
             {
@@ -492,7 +493,7 @@ namespace RepositoryManager.Service
                 {
                     var list = new List<NotesModel>();
                     var query = this.context.Notes.Where(s => s.Title.Contains(searchString)
-                                                            || s.Description.Contains(searchString));
+                                                            || s.Description.Contains(searchString) && s.UserId == userId);
                     list = query.ToList();
                     if (!list.Equals(null))
                     {

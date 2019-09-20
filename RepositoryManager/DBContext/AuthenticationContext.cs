@@ -32,7 +32,12 @@ namespace RepositoryManager.DBContext
         /// we will use this database Notes to query and save the instances of the Notes model
         /// </summary>
         public DbSet<LabelModel> Label { get; set; }
-
+        
+        /// <summary>
+        /// notes Label table
+        /// </summary>
+        public DbSet<NotesLabelModel> NotesLabel { get; set; }
+        
         /// <summary>
         /// we will use this database Notes to query and save the instances of the Collaborator model 
         /// </summary>

@@ -108,9 +108,10 @@ namespace BusinessManager.Interface
         /// <summary>
         /// Search the notes or description by given string
         /// </summary>
+        /// <param name="userId">userId</param>
         /// <param name="searchstring">input string</param>
         /// <returns>return result.</returns>
-        IList<NotesModel> Search(string searchstring);
+        IList<NotesModel> Search(string userId,string searchstring);
 
         /// <summary>
         /// set reminder the specific note.

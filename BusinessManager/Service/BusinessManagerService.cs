@@ -417,19 +417,20 @@ namespace BusinessManager.Service
         /// <summary>
         /// search notes or description by string.
         /// </summary>
+        /// <param name="userId">userI.</param>
         /// <param name="searchString">input string.</param>
         /// <returns>return result.</returns>
-        public IList<NotesModel> Search(string searchString)
+        public IList<NotesModel> Search(string userId, string searchString)
         {
             try
             {
-                if (!searchString.Equals(null))
+                if (!searchString.Equals(null)&& !userId.Equals(null))
                 {
                     ////notes list.
                     IList<NotesModel> result = new List<NotesModel>();
 
                     ////repositoryManager Layer method call
-                    result = this.repositoryManager.Search(searchString);
+                    result = this.repositoryManager.Search(userId, searchString);
                     if (!result.Equals(null))
                     {
                         return result;

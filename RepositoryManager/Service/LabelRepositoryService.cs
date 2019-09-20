@@ -45,7 +45,6 @@ namespace RepositoryManager.Service
             {
                 LabelModel label = new LabelModel()
                 {
-                    NoteId = labelModel.NoteId,
                     UserId = labelModel.UserId,
                     Lebel = labelModel.Lebel,
                 };
