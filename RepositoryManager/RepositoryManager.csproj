@@ -6,6 +6,7 @@
 
   <ItemGroup>
     <Compile Remove="Migrations\20190920102226_fundooApp.cs" />
+    <Compile Remove="Migrations\20190920125849_fundooApp.cs" />
   </ItemGroup>
 
   <ItemGroup>
