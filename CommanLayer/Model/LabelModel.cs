@@ -38,7 +38,7 @@ namespace CommanLayer.Model
         /// <value>
         /// The label.
         /// </value>
-        public string Lebel { get; set; }
+        public string LebelName { get; set; }
 
         /// <summary>
         /// Gets or sets the created date.

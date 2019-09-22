@@ -29,7 +29,7 @@ namespace XUnitTestProject.Label
             var data = new LabelModel()
             {
                 UserId = "UserID",
-                Lebel = "Lebel"
+                LebelName = "Lebel"
             };
 
             ////Act

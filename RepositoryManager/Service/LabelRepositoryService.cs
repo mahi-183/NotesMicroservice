@@ -46,7 +46,8 @@ namespace RepositoryManager.Service
                 LabelModel label = new LabelModel()
                 {
                     UserId = labelModel.UserId,
-                    Lebel = labelModel.Lebel,
+                    LebelName = labelModel.LebelName,
+                    CreatedDate = labelModel.CreatedDate
                 };
                 this.authenticationContext.Add(label);
 
@@ -127,7 +128,8 @@ namespace RepositoryManager.Service
 
                 foreach (var data in noteData)
                 {
-                    data.Lebel = labelModel.Lebel;
+                    data.LebelName = labelModel.LebelName;
+                    data.ModifiedDate = labelModel.ModifiedDate;
                 }
 
                 var result = await this.authenticationContext.SaveChangesAsync();

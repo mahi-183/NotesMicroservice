@@ -116,12 +116,12 @@ namespace NotesMicroservice.Controllers
         /// <returns>return result.</returns>
         [HttpPost]
         [Route("Update")]
-        public async Task<int> UpdateLabel(LabelModel labelModel, int UserId)
+        public async Task<int> UpdateLabel(LabelModel labelModel, int labelId)
         {
             try
             {
                 ////businessManager Layer method call.
-                var result = await this.businessManager.UpdateLabel(labelModel, UserId);
+                var result = await this.businessManager.UpdateLabel(labelModel, labelId);
                 return result;
             }
             catch (Exception ex)
