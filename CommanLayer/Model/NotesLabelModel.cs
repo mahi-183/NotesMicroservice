@@ -1,9 +1,7 @@
 ﻿namespace CommanLayer.Model
 {
     using System;
-    using System.Collections.Generic;
-    using System.Text;
-
+    
     /// <summary>
     /// NotesLabelModel class 
     /// </summary>
@@ -40,15 +38,7 @@
         /// The note identifier.
         /// </value>
         public int LabelId { get; set; }
-
-        /// <summary>
-        /// Gets or sets the label.
-        /// </summary>
-        /// <value>
-        /// The label.
-        /// </value>
-        public string LebelName { get; set; }
-
+        
         /// <summary>
         /// Gets or sets the created date.
         /// </summary>

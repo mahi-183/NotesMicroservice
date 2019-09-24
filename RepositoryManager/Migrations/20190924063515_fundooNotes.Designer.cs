@@ -10,8 +10,8 @@ using RepositoryManager.DBContext;
 namespace RepositoryManager.Migrations
 {
     [DbContext(typeof(AuthenticationContext))]
-    [Migration("20190822111539_FandoosNotes")]
-    partial class FandoosNotes
+    [Migration("20190924063515_fundooNotes")]
+    partial class fundooNotes
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -46,7 +46,26 @@ namespace RepositoryManager.Migrations
 
                     b.Property<DateTime?>("CreatedDate");
 
-                    b.Property<string>("Lebel");
+                    b.Property<string>("LabelName");
+
+                    b.Property<DateTime?>("ModifiedDate");
+
+                    b.Property<string>("UserId");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Label");
+                });
+
+            modelBuilder.Entity("CommanLayer.Model.NotesLabelModel", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime?>("CreatedDate");
+
+                    b.Property<int>("LabelId");
 
                     b.Property<DateTime?>("ModifiedDate");
 
@@ -56,7 +75,7 @@ namespace RepositoryManager.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Label");
+                    b.ToTable("NotesLabel");
                 });
 
             modelBuilder.Entity("CommanLayer.Model.NotesModel", b =>

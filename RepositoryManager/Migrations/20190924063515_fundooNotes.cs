@@ -1,24 +1,11 @@
-﻿// --------------------------------------------------------------------------------------------------------------------
-// <copyright file="FandoosNotes.cs" company="Bridgelabz">
-//   Copyright © 2019 Company="BridgeLabz"
-// </copyright>
-// <creator name="Mahesh Aurad"/>
-// --------------------------------------------------------------------------------------------------------------------
+﻿using System;
+using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
+
 namespace RepositoryManager.Migrations
 {
-    using System;
-    using Microsoft.EntityFrameworkCore.Metadata;
-    using Microsoft.EntityFrameworkCore.Migrations;
-
-    /// <summary>
-    /// the fandoo migration.
-    /// </summary>
-    public partial class FandoosNotes : Migration
+    public partial class fundooNotes : Migration
     {
-        /// <summary>
-        /// the migration method
-        /// </summary>
-        /// <param name="migrationBuilder">the migration.</param>
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.CreateTable(
@@ -42,9 +29,8 @@ namespace RepositoryManager.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
-                    NoteId = table.Column<int>(nullable: false),
                     UserId = table.Column<string>(nullable: true),
-                    Lebel = table.Column<string>(nullable: true),
+                    LabelName = table.Column<string>(nullable: true),
                     CreatedDate = table.Column<DateTime>(nullable: true),
                     ModifiedDate = table.Column<DateTime>(nullable: true)
                 },
@@ -74,6 +60,23 @@ namespace RepositoryManager.Migrations
                 {
                     table.PrimaryKey("PK_Notes", x => x.Id);
                 });
+
+            migrationBuilder.CreateTable(
+                name: "NotesLabel",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    UserId = table.Column<string>(nullable: true),
+                    NoteId = table.Column<int>(nullable: false),
+                    LabelId = table.Column<int>(nullable: false),
+                    CreatedDate = table.Column<DateTime>(nullable: true),
+                    ModifiedDate = table.Column<DateTime>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_NotesLabel", x => x.Id);
+                });
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -86,6 +89,9 @@ namespace RepositoryManager.Migrations
 
             migrationBuilder.DropTable(
                 name: "Notes");
+
+            migrationBuilder.DropTable(
+                name: "NotesLabel");
         }
     }
 }

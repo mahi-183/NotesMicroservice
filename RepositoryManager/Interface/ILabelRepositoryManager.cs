@@ -49,5 +49,28 @@ namespace RepositoryManager.Interface
         /// <param name="labeld">The labe Id.</param>
         /// <returns></returns>
         Task<int> DeleteLabel(int labeld);
+
+        /// <summary>
+        /// Adds the label.
+        /// </summary>
+        /// <param name="notesLabelModel">The NotesLabelModel model.</param>
+        /// <returns>return the result.</returns>
+        Task<int> AddNoteLabel(NotesLabelModel notesLabelModel);
+
+
+        /// <summary>
+        /// get the note label
+        /// </summary>
+        /// <param name="notesLabelModel">note label model data.</param>
+        /// <returns>return the label on note.</returns>
+        IList<LabelModel> GetNoteLabelById(NotesLabelModel notesLabelModel);
+        
+        /// <summary>
+        /// Deletes the label.
+        /// </summary>
+        /// <param name="labeld">The labe Id.</param>
+        /// <returns></returns>
+        Task<int> DeleteNoteLabel(int labeld,int notesId);
+
     }
 }

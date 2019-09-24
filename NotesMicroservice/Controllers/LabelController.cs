@@ -139,10 +139,82 @@ namespace NotesMicroservice.Controllers
         [Route("Delete")]
         public async Task<int> DeleteLabel(int LabelId)
         {
-            try
+            try 
             {
                 ////businessManager Layer method call.
                 var result = await this.businessManager.DeleteLabel(LabelId);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+
+       //------------------------------------------------------ Note Label Api's------------------------//
+
+        /// <summary>
+        /// the delete label.
+        /// </summary>
+        /// <param name="LabelId">label id.</param>
+        /// <returns>return result.</returns>
+        [HttpPost]
+        [Route("noteLabel")]
+        public async Task<int> AddNoteLabel(NotesLabelModel notesLabelModel)
+         {
+            try
+            {
+                ////businessManager Layer method call.
+                var result = await this.businessManager.AddNoteLabel(notesLabelModel);
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// get the note label by it id.
+        /// </summary>
+        /// <param name="notesLabelModel">notesLabelModel model data.</param>
+        /// <returns>return result.</returns>
+        [HttpPost]
+        [Route("getLabelNote")]
+        public IActionResult GetNoteLabelById(NotesLabelModel notesLabelModel)
+        {
+            try
+            {
+                IList<LabelModel> result = this.businessManager.GetNoteLabelById(notesLabelModel);
+                if (!result.Equals(null))
+                {
+                    return this.Ok(new { result });
+                }
+                else
+                {
+                    return this.NotFound();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// the delete note label.
+        /// </summary>
+        /// <param name="LabelId">label id.</param>
+        /// <returns>return result.</returns>
+        [HttpPost]
+        [Route("Delete")]
+        public async Task<int> DeleteNoteLabel(int labelId, int notesId)
+        {
+            try
+            {
+                ////businessManager Layer method call.
+                var result = await this.businessManager.DeleteLabel(LabelId, notesId);
                 return result;
             }
             catch (Exception ex)

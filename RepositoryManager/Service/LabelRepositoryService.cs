@@ -46,7 +46,7 @@ namespace RepositoryManager.Service
                 LabelModel label = new LabelModel()
                 {
                     UserId = labelModel.UserId,
-                    LebelName = labelModel.LebelName,
+                    LabelName = labelModel.LabelName,
                     CreatedDate = labelModel.CreatedDate
                 };
                 this.authenticationContext.Add(label);
@@ -128,7 +128,7 @@ namespace RepositoryManager.Service
 
                 foreach (var data in noteData)
                 {
-                    data.LebelName = labelModel.LebelName;
+                    data.LabelName = labelModel.LabelName;
                     data.ModifiedDate = labelModel.ModifiedDate;
                 }
 
@@ -164,5 +164,100 @@ namespace RepositoryManager.Service
                 throw new Exception(ex.Message);
             }
         }
+
+        
+        /// <summary>
+        /// Adds the label.
+        /// </summary>
+        /// <param name="labelModel">The label model.</param>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
+        public Task<int> AddNoteLabel(NotesLabelModel notesLabelModel)
+        {
+            try
+            {
+                var labelData = from label in this.authenticationContext.Label
+                                where label.Id == notesLabelModel.LabelId
+                                select label;
+
+                NotesLabelModel labelModel = new NotesLabelModel()
+                {
+                    UserId = notesLabelModel.UserId,
+                    LabelId = notesLabelModel.LabelId,
+                    NoteId = notesLabelModel.NoteId,
+                    CreatedDate = notesLabelModel.CreatedDate,
+                };
+                this.authenticationContext.Add(labelModel);
+
+                var result = this.authenticationContext.SaveChangesAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Gets the label by identifier.
+        /// </summary>
+        /// <param name="LabelId">The label identifier.</param>
+        /// <returns>return result.</returns>
+        public IList<LabelModel> GetNoteLabelById(NotesLabelModel notesLabelModel)
+        {
+            try
+            {
+                var list = new List<LabelModel>();
+                var GetData = from notelabel in this.authenticationContext.NotesLabel
+                              where notelabel.UserId.Equals(notesLabelModel.UserId) && notelabel.NoteId.Equals(notesLabelModel.NoteId)
+                              select notelabel;
+                
+                foreach (var data in GetData)
+                {
+                    var result = from label in this.authenticationContext.Label
+                                 where label.Id.Equals(data.LabelId) && (label.UserId.Equals(data.UserId))
+                                 select label;
+                    foreach (var label in result)
+                    {
+                        list.Add(label);
+                    }
+                }
+
+                return list;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// Deletes the label.
+        /// </summary>
+        /// <param name="LabelId">The label identifier.</param>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">throw exception.</exception>
+        public async Task<int> DeleteNoteLabel(int labeld, int notesId)
+        {
+            try
+            {
+                var labelData = from notesModel in this.authenticationContext.NotesLabel
+                                where (notesModel.LabelId = labeld) && (notesModel.NoteId == notesId)
+                                select notesModel;
+              //var data = (from label in this.authenticationContext.Label
+              //              where label.Id == id
+              //              select label).FirstOrDefault();
+
+                this.authenticationContext.Label.Remove(labelData);
+                var result = await this.authenticationContext.SaveChangesAsync();
+                return result;
+            }
+            catch (Exception ex)
+            {
+
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

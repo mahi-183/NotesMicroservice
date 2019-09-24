@@ -207,5 +207,111 @@ namespace BusinessManager.Service
                 throw new Exception(ex.Message);
             }
         }
+
+        /// <summary>
+        /// Adds label on notes.
+        /// </summary>
+        /// <param name="notesLabelModel">The NotesLabel model data.</param>
+        /// <returns> return result.</returns>
+        /// <exception cref="Exception">
+        /// throw exception.
+        /// </exception>
+        public async Task<int> AddNoteLabel(NotesLabelModel notesLabelModel)
+        {
+            try
+            {
+                ///check notes label model data is not null
+                if (!notesLabelModel.Equals(null))
+                {
+                    ////repositoryManager layer method called
+                    var result = await this.repositoryManager.AddNoteLabel(notesLabelModel);
+                    if (result > 0)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        /// <summary>
+        /// get the label which is on note.
+        /// </summary>
+        /// <param name="notesLabelModel">note label data model.</param>
+        /// <returns>return the label data.</returns>
+        public IList<LabelModel> GetNoteLabelById(NotesLabelModel notesLabelModel)
+        {
+            if (notesLabelModel.Equals(null))
+            {
+                try
+                {
+                    var result = this.repositoryManager.GetNoteLabelById(notesLabelModel);
+                    if (!result.Equals(null))
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+            else
+            {
+                throw new Exception();
+            }
+        }
+
+        /// <summary>
+        /// Deletes the label.
+        /// </summary>
+        /// <param name="labelId">The label identifier.</param>
+        /// <returns>return result.</returns>
+        /// <exception cref="Exception">
+        /// throw exception.
+        /// </exception>
+        public async Task<int> DeleteNoteLabel(int labelId,int notesId)
+        {
+            var cacheKey = data + labelId;
+            try
+            {
+                if (!labelId.Equals(null) && !notesId.Equals(null))
+                {
+                    ////repositoryManager Layer method call
+                    var result = await this.repositoryManager.DeleteNoteLabel(labelId, notesId);
+                    if (result > 0)
+                    {
+                        return result;
+                    }
+                    else
+                    {
+                        throw new Exception();
+                    }
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

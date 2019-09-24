@@ -44,7 +44,7 @@ namespace RepositoryManager.Migrations
 
                     b.Property<DateTime?>("CreatedDate");
 
-                    b.Property<string>("LebelName");
+                    b.Property<string>("LabelName");
 
                     b.Property<DateTime?>("ModifiedDate");
 
@@ -64,8 +64,6 @@ namespace RepositoryManager.Migrations
                     b.Property<DateTime?>("CreatedDate");
 
                     b.Property<int>("LabelId");
-
-                    b.Property<string>("LebelName");
 
                     b.Property<DateTime?>("ModifiedDate");
 

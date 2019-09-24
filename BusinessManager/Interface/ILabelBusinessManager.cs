@@ -49,5 +49,27 @@ namespace BusinessManager.Interface
         /// <param name="labelId">The label identifier.</param>
         /// <returns>return result.</returns>
         Task<int> DeleteLabel(int labelId);
+
+        /// <summary>
+        /// Adds label on notes.
+        /// </summary>
+        /// <param name="labelModel">The Noteslabel model data.</param>
+        /// <returns>return result.</returns>
+        Task<int> AddNoteLabel(NotesLabelModel notesLabelModel);
+        
+        /// <summary>
+        /// get the note label
+        /// </summary>
+        /// <param name="notesLabelModel">note label model data.</param>
+        /// <returns>return the label on note.</returns>
+        IList<LabelModel> GetNoteLabelById(NotesLabelModel notesLabelModel);
+        
+        /// <summary>
+        /// Deletes the note label.
+        /// </summary>
+        /// <param name="labelId">The label identifier.</param>
+        /// <returns>return result.</returns>
+        Task<int> DeleteNoteLabel(int labelId, int notesId);
+
     }
 }
