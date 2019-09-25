@@ -214,7 +214,7 @@ namespace NotesMicroservice.Controllers
             try
             {
                 ////businessManager Layer method call.
-                var result = await this.businessManager.DeleteLabel(LabelId, notesId);
+                var result = await this.businessManager.DeleteNoteLabel(labelId, notesId);
                 return result;
             }
             catch (Exception ex)
@@ -223,4 +223,4 @@ namespace NotesMicroservice.Controllers
             }
         }
     }
-}
+} 

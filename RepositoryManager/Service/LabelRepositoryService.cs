@@ -241,14 +241,14 @@ namespace RepositoryManager.Service
         {
             try
             {
-                var labelData = from notesModel in this.authenticationContext.NotesLabel
-                                where (notesModel.LabelId = labeld) && (notesModel.NoteId == notesId)
-                                select notesModel;
+                var labelData = (from notesModel in this.authenticationContext.NotesLabel
+                                where (notesModel.LabelId == labeld) && (notesModel.NoteId == notesId)
+                                select notesModel).FirstOrDefault();
               //var data = (from label in this.authenticationContext.Label
               //              where label.Id == id
               //              select label).FirstOrDefault();
 
-                this.authenticationContext.Label.Remove(labelData);
+                //this.authenticationContext.Label.Remove(labelDa);
                 var result = await this.authenticationContext.SaveChangesAsync();
                 return result;
             }
