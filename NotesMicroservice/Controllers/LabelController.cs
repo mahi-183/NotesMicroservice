@@ -135,7 +135,7 @@ namespace NotesMicroservice.Controllers
         /// </summary>
         /// <param name="LabelId">label id.</param>
         /// <returns>return result.</returns>
-        [HttpPost]
+        [HttpDelete]
         [Route("Delete")]
         public async Task<int> DeleteLabel(int LabelId)
         {
@@ -180,12 +180,13 @@ namespace NotesMicroservice.Controllers
         /// </summary>
         /// <param name="notesLabelModel">notesLabelModel model data.</param>
         /// <returns>return result.</returns>
-        [HttpPost]
+        [HttpGet]
         [Route("getLabelNote")]
-        public IActionResult GetNoteLabelById(NotesLabelModel notesLabelModel)
+        public IActionResult GetNoteLabelById()
         {
             try
             {
+                NotesLabelModel notesLabelModel = new NotesLabelModel();
                 IList<LabelModel> result = this.businessManager.GetNoteLabelById(notesLabelModel);
                 if (!result.Equals(null))
                 {
@@ -207,8 +208,8 @@ namespace NotesMicroservice.Controllers
         /// </summary>
         /// <param name="LabelId">label id.</param>
         /// <returns>return result.</returns>
-        [HttpPost]
-        [Route("Delete")]
+        [HttpDelete]
+        [Route("DeleteNoteLabel")]
         public async Task<int> DeleteNoteLabel(int labelId, int notesId)
         {
             try
